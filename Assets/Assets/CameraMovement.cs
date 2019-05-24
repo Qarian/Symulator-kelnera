@@ -38,7 +38,6 @@ public class CameraMovement : MonoBehaviour
 		
 		if (Input.GetKeyDown(mouseModeSwitch))
 			ChangeMouseMode();
-			
 	}
 	
 	void ChangeMouseMode()
