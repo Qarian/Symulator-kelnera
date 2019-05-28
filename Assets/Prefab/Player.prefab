@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 352773523}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.109999925, z: 0.9526}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1957087606999016490}
   m_RootOrder: 0
@@ -91,7 +91,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3e56e79244230b542986acf5503d2c86, type: 2}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,7 +118,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957087606240344710}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f0b07bcc0fa86d0449824e1c0d11e591, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -134,7 +134,7 @@ Rigidbody:
   m_GameObject: {fileID: 1957087606240344710}
   serializedVersion: 2
   m_Mass: 3
-  m_Drag: 5
+  m_Drag: 0.1
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -153,7 +153,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c282d5c20a1ee9458928cd6cb6742aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.1
+  speed: 20
+  maxSpeed: 6
+  jumpForce: 5
+  rb: {fileID: 0}
 --- !u!1 &1957087606999016486
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +168,6 @@ GameObject:
   - component: {fileID: 1957087606999016490}
   - component: {fileID: 1957087606999016491}
   - component: {fileID: 1957087606999016485}
-  - component: {fileID: 1957087606999016489}
   - component: {fileID: 1957087606999016484}
   - component: {fileID: 4346016508324649939}
   m_Layer: 0
@@ -213,8 +215,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.2
+  far clip plane: 500
   field of view: 70
   orthographic: 0
   orthographic size: 5
@@ -241,66 +243,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957087606999016486}
   m_Enabled: 1
---- !u!114 &1957087606999016489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957087606999016486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 1957087606999016490}
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 1
-  antialiasingMode: 0
-  temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 1
-    keepAlpha: 0
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 1
-  m_ShowCustomSorter: 1
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
 --- !u!114 &1957087606999016484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,7 +257,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1957087606240344714}
   cameraSpeed: 5
-  cameraYbounds: {x: -45, y: 45}
+  cameraYbounds: {x: -60, y: 60}
   mouseModeSwitch: 109
 --- !u!114 &4346016508324649939
 MonoBehaviour:
@@ -332,8 +274,9 @@ MonoBehaviour:
   crosshair: {fileID: 0}
   holdingPoint: {fileID: 352773524}
   maxDistance: 20
-  grabbingSpeed: 3
-  throwingForce: 100
-  grabbingDistance: 0.5
-  crosshairSize: {x: 10, y: 50}
-  crosshairChangeSpeed: 25
+  grabbingSpeed: 20
+  throwingForce: 400
+  grabbingDistance: 0.05
+  maxWeight: 8
+  crosshairSize: {x: 10, y: 25}
+  crosshairChangeSpeed: 20
