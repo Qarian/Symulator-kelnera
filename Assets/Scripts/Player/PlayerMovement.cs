@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] float jumpForce = 10f;
 
 	Vector3 moveAxis = Vector3.zero;
+	bool canJump = false;
 	
 	[HideInInspector]
 	public Rigidbody rb;
@@ -26,22 +27,28 @@ public class PlayerMovement : MonoBehaviour
 	void Update()
 	{
 		moveAxis = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-		if (Input.GetKeyDown(KeyCode.Space) && transform.position.y < 6f){
+		if (canJump && Input.GetKeyDown(KeyCode.Space) && transform.position.y < 6f){
 			rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
 		}
 	}
 	
     private void FixedUpdate()
-	{/*
-		Vector3 move = Vector3.zero;
-		move += moveAxis.z * transform.forward;
-		move += moveAxis.x * transform.right;
-		rb.MovePosition(transform.position + move.normalized * speed);*/
-
+	{
 		Vector3 accelaration = Vector3.zero;
 		accelaration += moveAxis.z * transform.forward;
 		accelaration += moveAxis.x * transform.right;
 		accelaration = accelaration.normalized * speed * Time.fixedDeltaTime;
 		rb.velocity = Vector3.ClampMagnitude(rb.velocity + accelaration, maxSpeed);
+	}
+
+	private void OnTriggerStay(Collider other)
+	{
+		if (other.tag == "Enviroment" || other.tag == "Table")
+		canJump = true;
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		canJump = false;
 	}
 }

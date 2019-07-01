@@ -9,21 +9,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform foodSpawnPointsTransform = default;
 	[SerializeField] TextMeshProUGUI moneyUI = default;
     [SerializeField] GameObject foodPrefab = default;
-	[SerializeField] Transform customerTransform = default;
-	[SerializeField] GameObject customerPrefab = default;
 
-	[HideInInspector] public GameObject customer;
 	[HideInInspector] public bool customerSelected = false;
-	private Interactive customerInteractive;
 
 	[Space]
+	[SerializeField] static float customersFoodChoosingTime = 4f;
 	[SerializeField] float foodSpawnTime = 10f;
 	[SerializeField] float newCustomerTime = 8f;
+	[SerializeField] Vector2Int money = default;
 	private int score = 0;
 
-	List<TableDetector> tables = new List<TableDetector>();
-	//[HideInInspector] public List<TableDetector> freeTables = new List<TableDetector>();
-	List<Transform> foodSpawnPoints = new List<Transform>();
+	private List<Table> tables = new List<Table>();
+	[HideInInspector] public List<Table> freeTables = new List<Table>();
+	private List<Transform> foodSpawnPoints = new List<Transform>();
+
+	[HideInInspector] public int maxQueueLength = 1;
+	private ClusterManager clusterManager;
 
 	public static GameManager singleton;
     private void Awake()
@@ -33,10 +34,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+		clusterManager = GetComponent<ClusterManager>();
+
 		for (int i = 0; i < tablesTransform.childCount; i++)
 		{
-			tables.Add(tablesTransform.GetChild(i).GetChild(0).GetComponent<TableDetector>());
-			//freeTables.Add(tables[i]);
+			tables.Add(tablesTransform.GetChild(i).GetComponent<Table>());
+			freeTables.Add(tables[i]);
 			tables[i].id = i;
 		}
         foreach (Transform child in foodSpawnPointsTransform)
@@ -59,26 +62,21 @@ public class GameManager : MonoBehaviour
 	{
 		while (true)
 		{
-			/*if (freeTables.Count > 0)
+			if (clusterManager.waitingClusters < maxQueueLength)
 			{
-				int tableId = Random.Range(0, freeTables.Count);
-				freeTables[tableId].ActivateOrder();
-				freeTables.RemoveAt(tableId);
-			}*/
-			if(customer == null)
-			{
-				customer = Instantiate(customerPrefab, customerTransform.position, Quaternion.identity);
-			 	customerInteractive = customer.GetComponent<Interactive>();
-				customerInteractive.SetAction(SelectCustomer);
+				clusterManager.GenerateNewCluster();
 			}
 			yield return new WaitForSeconds(newCustomerTime);
 		}
 	}
 
-	void SelectCustomer()
+	public void SelectCustomer()
 	{
 		customerSelected = true;
-		Destroy(customerInteractive);
+		foreach (var table in freeTables)
+		{
+			table.Enable();
+		}
 	}
 
 	public void ChangeScore(int change)
