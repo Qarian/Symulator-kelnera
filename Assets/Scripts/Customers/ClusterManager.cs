@@ -7,7 +7,9 @@ public class ClusterManager : MonoBehaviour
 	private List<CustomersCluster> clusters = new List<CustomersCluster>();
 	[HideInInspector] public int waitingClusters = 0;
 
-	[HideInInspector] public static Vector3[] queuePositions;
+	public static Vector3[] queuePositions;
+
+	int customersToSpawn = 2;
 
 	public void GenerateNewCluster()
 	{
@@ -16,7 +18,7 @@ public class ClusterManager : MonoBehaviour
 		{
 			Transform queueContainer = GameObject.FindGameObjectWithTag("Queue").transform;
 			int queuePointsNumber = queueContainer.childCount;
-			GameManager.singleton.maxQueueLength = queuePointsNumber;
+			GameManager.maxQueueLength = queuePointsNumber;
 			queuePositions = new Vector3[queuePointsNumber];
 			for (int i = 0; i < queuePointsNumber; i++)
 			{
@@ -26,7 +28,10 @@ public class ClusterManager : MonoBehaviour
 
 		CustomersCluster cluster = Instantiate(customerCluster).GetComponent<CustomersCluster>();
 		clusters.Add(cluster);
-		cluster.Instantiate(Random.Range(1, 5), waitingClusters);
+		cluster.Instantiate(customersToSpawn, waitingClusters);//(Random.Range(1, 5), waitingClusters);
+		customersToSpawn++;
+		if (customersToSpawn > 4)
+			customersToSpawn = 1;
 		waitingClusters++;
 	}
 

@@ -18,7 +18,7 @@ public class TableDetector : MonoBehaviour
 	
     private void FoodOnTable()
     {
-
+		tableComponent.EatFood(targetFoodRb);
 	}
 
     private void OnTriggerEnter(Collider collider)

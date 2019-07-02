@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Table : MonoBehaviour
 {
@@ -8,9 +7,8 @@ public class Table : MonoBehaviour
 	[SerializeField] Interactive interactiveComponent = default;
 	[SerializeField] GameObject sphere = default;
 	[SerializeField] GameObject mesh = default;
+	[HideInInspector] CustomersCluster customersAtTable;
 	Interactive tableInteractive;
-
-	float currentTime;
 	
 	[HideInInspector] public int id = 0;
 	public Color color = default;
@@ -31,13 +29,35 @@ public class Table : MonoBehaviour
 		SetColor();
 	}
 
-	//posadzenie klienta przy stole
+	#region customers
+	// Posadzenie klienta przy stole
 	void SitCustomer()
 	{
-		StartCoroutine(ActivateOrder());
-		tableInteractive.active = false;
-		GameManager.singleton.customerSelected = false;
+		customersAtTable = GameManager.singleton.ChooseTable(this);
 	}
+
+	// Klienci wybrali jedzenie
+	public void ActivateOrder()
+	{
+		sphere.SetActive(true);
+	}
+
+	// Składanie zamówienia, funkcja dodawan do interaktywnego obiektu
+	private void PlaceOrder()
+	{
+		sphere.SetActive(false);
+		GameManager.singleton.OrderFood(id, customersAtTable.numberOfCustomers);
+	}
+	
+	public void EatFood(Rigidbody food)
+	{
+		Destroy(food.gameObject);
+		if(customersAtTable.EatFood())
+		{
+			GameManager.singleton.FreeTable(this);
+		}
+	}
+	#endregion
 
 	public void Enable()
 	{
@@ -47,18 +67,6 @@ public class Table : MonoBehaviour
 	public void Disable()
 	{
 		interactiveComponent.active = false;
-	}
-
-	IEnumerator ActivateOrder()
-	{
-		yield return new WaitForSeconds(5);
-	}
-
-	// Składanie zamówienia, funkcja dodawan do interaktywnego obiektu
-	private void PlaceOrder()
-	{
-		sphere.SetActive(false);
-		GameManager.singleton.OrderFood(id);
 	}
 
 	// Ustawianie koloru stołu

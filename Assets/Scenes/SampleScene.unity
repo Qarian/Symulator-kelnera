@@ -130,7 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 28519000}
   m_Layer: 0
-  m_Name: 4
+  m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -148,7 +148,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683878142}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &77104417
 GameObject:
@@ -530,7 +530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &318205566
 Transform:
   m_ObjectHideFlags: 0
@@ -702,7 +702,7 @@ GameObject:
   m_Component:
   - component: {fileID: 422348803}
   m_Layer: 0
-  m_Name: 3
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -720,7 +720,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683878142}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &425493451
 PrefabInstance:
@@ -1090,7 +1090,7 @@ GameObject:
   - component: {fileID: 683878142}
   m_Layer: 0
   m_Name: Queue
-  m_TagString: Untagged
+  m_TagString: Queue
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1106,11 +1106,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1469918234}
-  - {fileID: 1711687281}
-  - {fileID: 575302647}
-  - {fileID: 422348803}
   - {fileID: 28519000}
+  - {fileID: 422348803}
+  - {fileID: 575302647}
+  - {fileID: 1711687281}
+  - {fileID: 1469918234}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1698,14 +1698,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1370037109}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.13, z: -14.42}
+  m_LocalRotation: {x: -0, y: -0.9845921, z: -0, w: -0.17486708}
+  m_LocalPosition: {x: -3.72, y: 1.13, z: -14.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1598346793}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -200.142, z: 0}
 --- !u!135 &1370037114
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1745,7 +1745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1469918234}
   m_Layer: 0
-  m_Name: 0
+  m_Name: 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1763,7 +1763,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683878142}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1476291393
 PrefabInstance:
@@ -1980,12 +1980,11 @@ MonoBehaviour:
   moneyUI: {fileID: 578087953}
   foodPrefab: {fileID: 2072217737263540707, guid: 18e90e129d5928641aa9be97f5792d21,
     type: 3}
-  customerSelected: 0
+  customersFoodChoosingTime: 5
   foodSpawnTime: 3
-  newCustomerTime: 7
-  money: {x: 0, y: 0}
+  newCustomerTime: 4
+  money: {x: 0, y: 5}
   freeTables: []
-  maxQueueLength: 1
 --- !u!4 &1528743069
 Transform:
   m_ObjectHideFlags: 0
@@ -2280,7 +2279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1711687281}
   m_Layer: 0
-  m_Name: 1
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2298,7 +2297,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 683878142}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1777632320
 GameObject:

@@ -10,20 +10,20 @@ public class GameManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI moneyUI = default;
     [SerializeField] GameObject foodPrefab = default;
 
-	[HideInInspector] public bool customerSelected = false;
+	public static CustomersCluster selectedCustomers;
 
 	[Space]
-	[SerializeField] static float customersFoodChoosingTime = 4f;
+	[SerializeField] float customersFoodChoosingTime = 4f;
 	[SerializeField] float foodSpawnTime = 10f;
 	[SerializeField] float newCustomerTime = 8f;
 	[SerializeField] Vector2Int money = default;
 	private int score = 0;
 
 	private List<Table> tables = new List<Table>();
-	[HideInInspector] public List<Table> freeTables = new List<Table>();
+	private List<Table> freeTables = new List<Table>();
 	private List<Transform> foodSpawnPoints = new List<Transform>();
 
-	[HideInInspector] public int maxQueueLength = 1;
+	[HideInInspector] public static int maxQueueLength = 1;
 	private ClusterManager clusterManager;
 
 	public static GameManager singleton;
@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
 			Application.Quit();
 	}
 
+	#region Customers
 	IEnumerator NewCustomers()
 	{
 		while (true)
@@ -70,14 +71,65 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void SelectCustomer()
+	// Player select customers
+	public void SelectCustomer(CustomersCluster customersCluster)
 	{
-		customerSelected = true;
+		selectedCustomers = customersCluster;
 		foreach (var table in freeTables)
 		{
 			table.Enable();
 		}
 	}
+
+	// Player choose table for customers
+	public CustomersCluster ChooseTable(Table table)
+	{
+		CustomersCluster ret = selectedCustomers;
+		foreach (Table freeTable in freeTables)
+		{
+			freeTable.Disable();
+		}
+		selectedCustomers.AssignToTable(table);
+		freeTables.Remove(table);
+		selectedCustomers = null;
+		clusterManager.MoveClusters();
+		StartCoroutine(TimeToOrder(table));
+		return ret;
+	}
+
+	// Klienci wybierają jedzenie
+	IEnumerator TimeToOrder(Table table)
+	{
+		yield return new WaitForSeconds(customersFoodChoosingTime);
+		table.ActivateOrder();
+	}
+	
+    public void OrderFood(int id, int quatity)
+    {
+        StartCoroutine(SpawnFood(id, quatity));
+    }
+	
+	//Spawn food after set time
+    IEnumerator SpawnFood(int id, int quatity)
+    {
+        yield return new WaitForSeconds(foodSpawnTime);
+		for (int i = 0; i < quatity; i++)
+		{
+			GameObject go = Instantiate(foodPrefab, foodSpawnPoints[id].position + new Vector3(0,i * 0.5f,0), Quaternion.identity);
+			go.GetComponent<FoodScript>().SetColor(tables[id].color);
+		}
+	}
+
+	public void FreeTable(Table table)
+	{
+		freeTables.Add(table);
+		if (selectedCustomers != null)
+		{
+			table.Enable();
+		}
+		ChangeScore(10);
+	}
+	#endregion
 
 	public void ChangeScore(int change)
 	{
@@ -85,15 +137,4 @@ public class GameManager : MonoBehaviour
 		moneyUI.text = score.ToString();
 	}
 
-    public void OrderFood(int id)
-    {
-        StartCoroutine(SpawnFood(id));
-    }
-	//Spawn food after set time
-    IEnumerator SpawnFood(int id)
-    {
-        yield return new WaitForSeconds(foodSpawnTime);
-        GameObject go = Instantiate(foodPrefab, foodSpawnPoints[id].position, Quaternion.identity);
-		go.GetComponent<FoodScript>().SetColor(tables[id].color);
-	}
 }

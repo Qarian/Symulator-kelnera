@@ -8,7 +8,7 @@ public class Customer : MonoBehaviour
 	[HideInInspector] public CustomersCluster cluster;
 	[HideInInspector] public Interactive interactiveComponent;
 
-	private void Start()
+	private void Begin()
 	{
 		agent = GetComponent<NavMeshAgent>();
 		interactiveComponent = GetComponent<Interactive>();
@@ -17,16 +17,14 @@ public class Customer : MonoBehaviour
 
 	void InteractiveFunction()
 	{
+		Debug.Log("customer selected");
 		cluster.SelectCustomer();
 	}
 
 	public void SetDestination(Transform transform)
 	{
+		if(agent == null)
+			Begin();
 		agent.SetDestination(transform.position);
-	}
-
-	public void SetDestination(Vector3 position)
-	{
-		agent.SetDestination(position);
 	}
 }
