@@ -4,11 +4,13 @@ public class TableDetector : MonoBehaviour
 {
 	[SerializeField] Table tableComponent = default;
 
+	// References to food components
     Rigidbody targetFoodRb;
 	FoodScript targetFoodScript;
 
 	private void Update()
 	{
+		// if food is on table, check if it isn't moving
 		if (targetFoodRb != null)
 		{
 			if (targetFoodScript.taken == false && targetFoodRb.velocity == Vector3.zero)
@@ -16,11 +18,13 @@ public class TableDetector : MonoBehaviour
 		}
 	}
 	
+	// Function to run when food is on table
     private void FoodOnTable()
     {
 		tableComponent.EatFood(targetFoodRb);
 	}
 
+	// Check if food entered trigger
     private void OnTriggerEnter(Collider collider)
     {
 		targetFoodScript = collider.GetComponent<FoodScript>();
@@ -30,6 +34,7 @@ public class TableDetector : MonoBehaviour
 		}
 	}
 
+	// Check if food exit trigger
 	private void OnTriggerExit(Collider other)
 	{
 		if(other.GetComponent<Rigidbody>() == targetFoodRb)
@@ -38,5 +43,4 @@ public class TableDetector : MonoBehaviour
 			targetFoodScript = null;
 		}
 	}
-
 }

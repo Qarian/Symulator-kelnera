@@ -15,8 +15,9 @@ public class GameManager : MonoBehaviour
 	[Space]
 	[SerializeField] float customersFoodChoosingTime = 4f;
 	[SerializeField] float foodSpawnTime = 10f;
+	public float customersEatingTime = 5f;
 	[SerializeField] float newCustomerTime = 8f;
-	[SerializeField] Vector2Int money = default;
+	public Vector2Int money = default;
 	private int score = 0;
 
 	private List<Table> tables = new List<Table>();
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
 		return ret;
 	}
 
-	// Klienci wybierają jedzenie
+	// Customers choose meal
 	IEnumerator TimeToOrder(Table table)
 	{
 		yield return new WaitForSeconds(customersFoodChoosingTime);

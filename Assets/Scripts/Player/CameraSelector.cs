@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+
 public class CameraSelector : MonoBehaviour
 {
 	[SerializeField] RectTransform crosshair = default;
@@ -33,7 +32,7 @@ public class CameraSelector : MonoBehaviour
 
 	private void Update()
 	{
-		//Czy trzyma się jakiegoś przedmiotu
+		//If player is not holding any object
 		if (holdingObject == null)
 		{
             crosshair.gameObject.SetActive(true);
@@ -80,9 +79,10 @@ public class CameraSelector : MonoBehaviour
                     currentInteractive.Interaction();
             }
 
+			// Drop object
             if (Input.GetMouseButtonDown(0))
 				LeaveItem();
-
+			// Throw object
 			if (Input.GetMouseButtonDown(1))
 			{
 				holdingObject.AddForce(transform.forward * throwingForce);
@@ -91,6 +91,7 @@ public class CameraSelector : MonoBehaviour
 		}
         size -= crosshairChangeSpeed * Time.deltaTime;
 
+		//Change size of crosshair
         size = Mathf.Clamp(size, crosshairSize.x, crosshairSize.y);
         crosshair.sizeDelta = new Vector2(size, size);
     }
@@ -115,6 +116,7 @@ public class CameraSelector : MonoBehaviour
 		}
 	}
 
+	// Grab object
 	private void GrabItem(Rigidbody rb)
 	{
 		//crosshair.gameObject.SetActive(false);
@@ -127,6 +129,7 @@ public class CameraSelector : MonoBehaviour
 			food.taken = true;
 	}
 
+	// Drop object
 	private void LeaveItem()
 	{
 		holdingObject.useGravity = true;

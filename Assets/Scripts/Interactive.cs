@@ -3,8 +3,8 @@ using System;
 
 public class Interactive : MonoBehaviour
 {
-	[SerializeField]
-	Action action;
+	// Action to run during interaction
+	[SerializeField] Action action;
 
 	public bool active = true;
 
@@ -12,6 +12,7 @@ public class Interactive : MonoBehaviour
 	{
 		this.action = action;
 	}
+
     public void Interaction()
 	{
 		action();

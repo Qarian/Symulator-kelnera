@@ -10,6 +10,7 @@ public class CustomersCluster : MonoBehaviour
 	private int order;
 	private int foodsEaten = 0;
 
+	// Instantiate new cluster of customers
 	public void Instantiate(int numberOfCustomers, int order)
 	{
 		this.order = order;
@@ -18,6 +19,7 @@ public class CustomersCluster : MonoBehaviour
 
 		// Get positions for customers
 		this.numberOfCustomers = numberOfCustomers;
+		Debug.Log(numberOfCustomers);
 		customersTransforms = new Transform[numberOfCustomers];
 		Transform tmp = transform.GetChild(0).GetChild(numberOfCustomers - 1);
 		for (int i = 0; i < numberOfCustomers; i++)
@@ -41,6 +43,7 @@ public class CustomersCluster : MonoBehaviour
 		}
 	}
 
+	// Move cluster to next position in queue
 	public void MoveCustomers()
 	{
 		order--;
@@ -54,20 +57,23 @@ public class CustomersCluster : MonoBehaviour
 		}
 	}
 
+	// disable interactive component on all customers
 	public void SelectCustomer()
 	{
 		if (GameManager.selectedCustomers == null)
 		{
 			GameManager.singleton.SelectCustomer(this);
-			foreach (var customer in customers)
+			for (int i = 0; i < numberOfCustomers; i++)
 			{
-				customer.interactiveComponent.active = false;
+				customers[i].interactiveComponent.active = false;
 			}
 		}
 	}
 
+	// Assign every customer their place at table
 	public void AssignToTable(Table table)
 	{
+		table.SittingCustomers = this;
 		for (int i = 0; i < numberOfCustomers; i++)
 		{
 			customers[i].SetDestination(table.positions.GetChild(i));
@@ -81,9 +87,9 @@ public class CustomersCluster : MonoBehaviour
 		foodsEaten++;
 		if(foodsEaten == numberOfCustomers)
 		{
-			foreach (var customer in customers)
+			for (int i = 0; i < numberOfCustomers; i++)
 			{
-				Destroy(customer.gameObject);
+				Destroy(customers[i].gameObject);
 			}
 			return true;
 		}

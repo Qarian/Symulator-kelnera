@@ -17,6 +17,7 @@ public class CameraMovement : MonoBehaviour
 	
 	float rotationY;
 	
+	//Hide mouse on start
 	void Start() 
 	{
 		mouseVisible = Cursor.visible;
@@ -26,6 +27,7 @@ public class CameraMovement : MonoBehaviour
 	
 	void Update()
 	{
+		// move camera when mouse is invisible
 		if (!mouseVisible) {
 			float yAngle = cameraSpeed * Input.GetAxis("Mouse Y");
 			float xAngle = cameraSpeed * Input.GetAxis("Mouse X");
@@ -35,11 +37,12 @@ public class CameraMovement : MonoBehaviour
 			rotationY = Mathf.Clamp(rotationY + yAngle, cameraYbounds.x, cameraYbounds.y);
 			transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
 		}
-		
+
 		if (Input.GetKeyDown(mouseModeSwitch))
 			ChangeMouseMode();
 	}
-	
+
+	// Toggle mouse visibility
 	void ChangeMouseMode()
 	{
 		if (mouseVisible)

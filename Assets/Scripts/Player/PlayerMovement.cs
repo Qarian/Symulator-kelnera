@@ -26,12 +26,15 @@ public class PlayerMovement : MonoBehaviour
 	
 	void Update()
 	{
+		// Get movement input
 		moveAxis = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+		// Jumping
 		if (canJump && Input.GetKeyDown(KeyCode.Space) && transform.position.y < 6f){
 			rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
 		}
 	}
 	
+	// Calculate valocity of player
     private void FixedUpdate()
 	{
 		Vector3 accelaration = Vector3.zero;
@@ -41,12 +44,14 @@ public class PlayerMovement : MonoBehaviour
 		rb.velocity = Vector3.ClampMagnitude(rb.velocity + accelaration, maxSpeed);
 	}
 
+	// Check if player can jump
 	private void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Enviroment" || other.tag == "Table")
 		canJump = true;
 	}
 
+	// Disable player ability to jump
 	private void OnTriggerExit(Collider other)
 	{
 		canJump = false;

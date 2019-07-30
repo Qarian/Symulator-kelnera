@@ -15,12 +15,14 @@ public class Customer : MonoBehaviour
 		interactiveComponent.SetAction(InteractiveFunction);
 	}
 
+	// Function to run when player interact with customer
 	void InteractiveFunction()
 	{
 		Debug.Log("customer selected");
 		cluster.SelectCustomer();
 	}
 
+	// Set destination of NavMesh using Transform component
 	public void SetDestination(Transform transform)
 	{
 		if(agent == null)

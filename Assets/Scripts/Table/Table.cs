@@ -9,9 +9,12 @@ public class Table : MonoBehaviour
 	[SerializeField] GameObject mesh = default;
 	[HideInInspector] CustomersCluster customersAtTable;
 	Interactive tableInteractive;
-	
+	CustomersCluster sittingCustomers;
+
 	[HideInInspector] public int id = 0;
 	public Color color = default;
+
+	public CustomersCluster SittingCustomers {set => sittingCustomers = value; }
 
 	private void Start()
 	{
@@ -20,29 +23,30 @@ public class Table : MonoBehaviour
 		Interactive interactive = sphere.AddComponent(typeof(Interactive)) as Interactive;
 		interactive.SetAction(PlaceOrder);
 		tableInteractive = mesh.GetComponent<Interactive>();
-		tableInteractive.SetAction(SitCustomer);
+		tableInteractive.SetAction(SitCustomers);
 		sphere.SetActive(false);
 	}
 
+	// Set color when changed value in inspector
 	private void OnValidate()
 	{
 		SetColor();
 	}
 
 	#region customers
-	// Posadzenie klienta przy stole
-	void SitCustomer()
+	// Put customers at table
+	void SitCustomers()
 	{
 		customersAtTable = GameManager.singleton.ChooseTable(this);
 	}
 
-	// Klienci wybrali jedzenie
+	// Customers have chosen the meal
 	public void ActivateOrder()
 	{
 		sphere.SetActive(true);
 	}
 
-	// Składanie zamówienia, funkcja dodawan do interaktywnego obiektu
+	// Place order, function to add to interactive object
 	private void PlaceOrder()
 	{
 		sphere.SetActive(false);
@@ -69,7 +73,7 @@ public class Table : MonoBehaviour
 		interactiveComponent.active = false;
 	}
 
-	// Ustawianie koloru stołu
+	// Set color of the table
 	private void SetColor()
 	{
 		ColorScript.SetColor(sphere, color);

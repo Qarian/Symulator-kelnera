@@ -494,17 +494,17 @@ PrefabInstance:
     - target: {fileID: 3223302024930997175, guid: 3fc8223adc8078e45851715bcac56c46,
         type: 3}
       propertyPath: color.r
-      value: 0.7372549
+      value: 0.9811321
       objectReference: {fileID: 0}
     - target: {fileID: 3223302024930997175, guid: 3fc8223adc8078e45851715bcac56c46,
         type: 3}
       propertyPath: color.b
-      value: 0.56078434
+      value: 0.0046279924
       objectReference: {fileID: 0}
     - target: {fileID: 3223302024930997175, guid: 3fc8223adc8078e45851715bcac56c46,
         type: 3}
       propertyPath: color.g
-      value: 0.56078434
+      value: 0.55293626
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fc8223adc8078e45851715bcac56c46, type: 3}
@@ -2013,6 +2013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   customerCluster: {fileID: 2278585955556541131, guid: 1d2e1941c942da640b8db77efbc523c2,
     type: 3}
+  queue: {fileID: 683878142}
   waitingClusters: 0
 --- !u!1 &1598202785
 GameObject:
@@ -3245,7 +3246,7 @@ PrefabInstance:
     - target: {fileID: 3223302024930997175, guid: 3fc8223adc8078e45851715bcac56c46,
         type: 3}
       propertyPath: color.b
-      value: 0
+      value: 0.23047733
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fc8223adc8078e45851715bcac56c46, type: 3}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class ClusterManager : MonoBehaviour
 {
 	[SerializeField] GameObject customerCluster = default;
+	[SerializeField] Transform queue = default;
 	private List<CustomersCluster> clusters = new List<CustomersCluster>();
 	[HideInInspector] public int waitingClusters = 0;
 
@@ -11,12 +12,14 @@ public class ClusterManager : MonoBehaviour
 
 	int customersToSpawn = 2;
 
+	// Instantiate cluster of 1 - 4 customers 
 	public void GenerateNewCluster()
 	{
+		Debug.Log("ehsgdf");
 		// get queue positions
 		if (queuePositions == null)// first time
 		{
-			Transform queueContainer = GameObject.FindGameObjectWithTag("Queue").transform;
+			Transform queueContainer = queue;
 			int queuePointsNumber = queueContainer.childCount;
 			GameManager.maxQueueLength = queuePointsNumber;
 			queuePositions = new Vector3[queuePointsNumber];
@@ -25,7 +28,7 @@ public class ClusterManager : MonoBehaviour
 				queuePositions[i] = queueContainer.GetChild(i).position;
 			}
 		}
-
+		
 		CustomersCluster cluster = Instantiate(customerCluster).GetComponent<CustomersCluster>();
 		clusters.Add(cluster);
 		cluster.Instantiate(customersToSpawn, waitingClusters);//(Random.Range(1, 5), waitingClusters);
@@ -35,6 +38,7 @@ public class ClusterManager : MonoBehaviour
 		waitingClusters++;
 	}
 
+	// Move all clusters in queue 
 	public void MoveClusters()
 	{
 		waitingClusters--;
