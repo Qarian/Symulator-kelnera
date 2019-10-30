@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 228934101114417823}
   - component: {fileID: 1140453284730853817}
   - component: {fileID: 2962554421467148547}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,6 +244,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -281,14 +282,13 @@ GameObject:
   - component: {fileID: 1959021989435761995}
   - component: {fileID: 6912186779599615057}
   - component: {fileID: 1631830298950899616}
-  - component: {fileID: 815422636177922504}
   - component: {fileID: 5584777398121369789}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &3006621029218583720
 Transform:
@@ -337,6 +337,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -362,19 +363,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &815422636177922504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7548289671659503230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 539b1ceb27bb4124c99a5352bb8ef7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 0
 --- !u!208 &5584777398121369789
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -472,10 +460,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76bd4df5faad33c4780c641d48f3154e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positions: {fileID: 7282262830613141310}
+  chairPositions: {fileID: 7282262830613141310}
   tableDetector: {fileID: 2962554421467148547}
-  interactiveComponent: {fileID: 815422636177922504}
-  sphere: {fileID: 7043857639180300902}
+  orderSphere: {fileID: 7043857639180300902}
   mesh: {fileID: 7548289671659503230}
   id: 0
-  color: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+  color: {r: 0.57225144, g: 0.5754717, b: 0.377314, a: 0}

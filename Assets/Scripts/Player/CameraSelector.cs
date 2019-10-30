@@ -44,7 +44,8 @@ public class CameraSelector : MonoBehaviour
 			{
 				Rigidbody rb = hit.rigidbody;
                 currentInteractive = hit.transform.GetComponent<Interactive>();
-
+                Debug.Log(hit.transform.name);
+                Debug.Log(currentInteractive);
 				// czy trafiono w coś interaktywnego
 				if (currentInteractive != null && currentInteractive.active)
 				{

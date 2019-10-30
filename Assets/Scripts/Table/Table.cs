@@ -2,29 +2,26 @@
 
 public class Table : MonoBehaviour
 {
-	public Transform positions = default;
+	public Transform chairPositions = default;
 	public TableDetector tableDetector = default;
-	[SerializeField] Interactive interactiveComponent = default;
-	[SerializeField] GameObject sphere = default;
+	[SerializeField] GameObject orderSphere = default;
 	[SerializeField] GameObject mesh = default;
-	[HideInInspector] CustomersCluster customersAtTable;
 	Interactive tableInteractive;
 	CustomersCluster sittingCustomers;
 
 	[HideInInspector] public int id = 0;
 	public Color color = default;
 
-	public CustomersCluster SittingCustomers {set => sittingCustomers = value; }
-
 	private void Start()
 	{
-		SetColor();
+        SetColor();
 
-		Interactive interactive = sphere.AddComponent(typeof(Interactive)) as Interactive;
-		interactive.SetAction(PlaceOrder);
-		tableInteractive = mesh.GetComponent<Interactive>();
-		tableInteractive.SetAction(SitCustomers);
-		sphere.SetActive(false);
+        Interactive interactiveSphere = orderSphere.AddComponent<Interactive>();
+        interactiveSphere.SetAction(PlaceOrder);
+		tableInteractive = mesh.AddComponent<Interactive>();
+        tableInteractive.SetAction(SitCustomers);
+        Disable();
+		orderSphere.SetActive(false);
 	}
 
 	// Set color when changed value in inspector
@@ -37,46 +34,46 @@ public class Table : MonoBehaviour
 	// Put customers at table
 	void SitCustomers()
 	{
-		customersAtTable = GameManager.singleton.ChooseTable(this);
+        sittingCustomers = CustomersManager.singleton.ChooseTable(this);
 	}
 
 	// Customers have chosen the meal
 	public void ActivateOrder()
 	{
-		sphere.SetActive(true);
+		orderSphere.SetActive(true);
 	}
 
 	// Place order, function to add to interactive object
 	private void PlaceOrder()
 	{
-		sphere.SetActive(false);
-		GameManager.singleton.OrderFood(id, customersAtTable.numberOfCustomers);
+		orderSphere.SetActive(false);
+        CustomersManager.singleton.OrderFood(id, sittingCustomers.numberOfCustomers);
 	}
 	
 	public void EatFood(Rigidbody food)
 	{
 		Destroy(food.gameObject);
-		if(customersAtTable.EatFood())
+		if(sittingCustomers.EatFood())
 		{
-			GameManager.singleton.FreeTable(this);
+            CustomersManager.singleton.FreeTable(this);
 		}
 	}
 	#endregion
 
 	public void Enable()
 	{
-		interactiveComponent.active = true;
+        tableInteractive.active = true;
 	}
 
 	public void Disable()
 	{
-		interactiveComponent.active = false;
+        tableInteractive.active = false;
 	}
 
 	// Set color of the table
 	private void SetColor()
 	{
-		ColorScript.SetColor(sphere, color);
+		ColorScript.SetColor(orderSphere, color);
 		ColorScript.SetColor(mesh, color);
 	}
 }
