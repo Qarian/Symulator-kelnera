@@ -16,7 +16,6 @@ public class CustomersManager : MonoBehaviour
     [SerializeField] float customersFoodChoosingTime = 4f;
     [SerializeField] float foodSpawnTime = 10f;
     public float customersEatingTime = 5f;
-    public Vector2Int tip = default;
     [SerializeField] float newCustomerTime = 8f;
 
     public static CustomersCluster selectedCustomers;
