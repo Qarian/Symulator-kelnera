@@ -11,7 +11,7 @@ public class Queue : MonoBehaviour
     int maxWaitingClusters;
 	int currentWaitingClusters = 0;
 	// Instantiate cluster of 1 - 4 customers 
-	public void GenerateNewCluster()
+	public bool GenerateNewCluster()
 	{
 		// get queue positions
 		if (queuePositions == null)// first time
@@ -23,11 +23,15 @@ public class Queue : MonoBehaviour
 				queuePositions[i] = transform.GetChild(i).position;
 			}
 		}
-		
+
+        if (currentWaitingClusters == maxWaitingClusters)
+            return false;
+
 		CustomersCluster cluster = Instantiate(customerCluster, queuePositions[maxWaitingClusters-1], Quaternion.identity).GetComponent<CustomersCluster>();
 		clusters.Add(cluster);
 		cluster.Create(Random.Range(1, 5), currentWaitingClusters);
         currentWaitingClusters++;
+        return true;
 	}
 
 	// Move all clusters in queue 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CustomersManager : MonoBehaviour
 {
     [Header("References")]
+    public Transform exit = default;
     [SerializeField] Transform tablesTransform = default;
     [SerializeField] Transform foodSpawnPointsTransform = default;
     [SerializeField] GameObject foodPrefab = default;
@@ -73,12 +74,13 @@ public class CustomersManager : MonoBehaviour
         {
             freeTable.Disable();
         }
+        CustomersCluster ret = selectedCustomers;
         selectedCustomers.AssignToTable(table);
         freeTables.Remove(table);
         selectedCustomers = null;
         queue.MoveClusters();
         StartCoroutine(TimeToOrder(table));
-        return selectedCustomers;
+        return ret;
     }
 
     // Customers choose meal

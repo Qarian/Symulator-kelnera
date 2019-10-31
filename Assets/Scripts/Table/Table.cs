@@ -46,7 +46,8 @@ public class Table : MonoBehaviour
 	// Place order, function to add to interactive object
 	private void PlaceOrder()
 	{
-		orderSphere.SetActive(false);
+        orderSphere.SetActive(false);
+        Debug.Log(sittingCustomers);
         CustomersManager.singleton.OrderFood(id, sittingCustomers.numberOfCustomers);
 	}
 	

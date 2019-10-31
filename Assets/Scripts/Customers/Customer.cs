@@ -1,32 +1,48 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using System;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Customer : MonoBehaviour
 {
-	NavMeshAgent agent;
-	[HideInInspector] public CustomersCluster cluster;
-	[HideInInspector] public Interactive interactiveComponent;
+    NavMeshAgent agent;
+    Interactive interactiveComponent;
+    CustomersCluster cluster;
 
-	private void Begin()
+    Action action;
+
+    public CustomersCluster Cluster {
+        set { 
+            cluster = value;
+            interactiveComponent.SetAction(cluster.SelectCustomer);
+        }
+    }
+
+    private void Awake()
 	{
 		agent = GetComponent<NavMeshAgent>();
 		interactiveComponent = GetComponent<Interactive>();
-		interactiveComponent.SetAction(InteractiveFunction);
 	}
 
-	// Function to run when player interact with customer
-	void InteractiveFunction()
-	{
-		Debug.Log("customer selected");
-		cluster.SelectCustomer();
-	}
+    public void Update()
+    {
+        if (action != null && agent.remainingDistance > 0f && agent.remainingDistance < 1f)
+        {
+            action();
+            action = null;
+        }
+    }
 
-	// Set destination of NavMesh using Transform component
-	public void SetDestination(Transform transform)
-	{
-		if(agent == null)
-			Begin();
-		agent.SetDestination(transform.position);
-	}
+    public void Disable()
+    {
+        interactiveComponent.active = false;
+    }
+
+    // Set destination of NavMesh using Transform component
+    public void SetDestination(Transform transform, Action action = null)
+    {
+        agent.SetDestination(transform.position);
+        this.action = action;
+    }
+
 }

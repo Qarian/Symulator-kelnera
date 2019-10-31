@@ -44,8 +44,6 @@ public class CameraSelector : MonoBehaviour
 			{
 				Rigidbody rb = hit.rigidbody;
                 currentInteractive = hit.transform.GetComponent<Interactive>();
-                Debug.Log(hit.transform.name);
-                Debug.Log(currentInteractive);
 				// czy trafiono w coś interaktywnego
 				if (currentInteractive != null && currentInteractive.active)
 				{
@@ -60,12 +58,7 @@ public class CameraSelector : MonoBehaviour
 				{
                     // Czy naciśnięto przycisk
                     if (Input.GetMouseButtonDown(0))
-					{
-						if(rb.mass < maxWeight)
 							GrabItem(rb);
-						else
-							Debug.Log("Za ciezkie");
-					}
                     size += 2 * crosshairChangeSpeed * Time.deltaTime;
                 }
 			}
@@ -110,18 +103,19 @@ public class CameraSelector : MonoBehaviour
 					grabbed = true;
 				}
 			}
-			else
-			{
-				//holdingObject.MovePosition(holdingPoint.position);
-			}
 		}
 	}
 
 	// Grab object
 	private void GrabItem(Rigidbody rb)
 	{
-		//crosshair.gameObject.SetActive(false);
-		holdingObject = rb;
+        if (rb.mass > maxWeight)
+        {
+            Debug.Log("Za ciezkie");
+            return;
+        }
+
+        holdingObject = rb;
 		holdingObject.useGravity = false;
 		
 

@@ -4,7 +4,7 @@ using System;
 public class Interactive : MonoBehaviour
 {
 	// Action to run during interaction
-	[SerializeField] Action action;
+	Action action;
 
 	public bool active = true;
 

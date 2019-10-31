@@ -29,11 +29,11 @@ public class CustomersCluster : MonoBehaviour
 		customers = new Customer[numberOfCustomers];
 		for (int i = 0; i < numberOfCustomers; i++)
 		{
-			customers[i] = Instantiate(customerPrefab, customersTransforms[i].position, Quaternion.identity, GameManager.singleton.transform).GetComponent<Customer>();
-			customers[i].cluster = this;
+			customers[i] = InstantiateCustomer(customersTransforms[i].position);
+			customers[i].Cluster = this;
 		}
 
-		// Move Customers to Start of queue
+		// Move Customers to their place in queue
 		transform.position = Queue.queuePositions[order];
 		for (int i = 0; i < numberOfCustomers; i++)
 		{
@@ -41,8 +41,15 @@ public class CustomersCluster : MonoBehaviour
 		}
 	}
 
-	// Move cluster to next position in queue
-	public void MoveCustomers()
+    Customer InstantiateCustomer(Vector3 position)
+    {
+        //TODO: Pooling
+        GameObject newCustomer = Instantiate(customerPrefab, position, Quaternion.identity, GameManager.singleton.transform);
+        return newCustomer.GetComponent<Customer>();
+    }
+
+    // Move cluster to next position in queue
+    public void MoveCustomers()
 	{
 		orderInQueue--;
 		if (orderInQueue >= 0)
@@ -63,7 +70,7 @@ public class CustomersCluster : MonoBehaviour
             CustomersManager.singleton.SelectCustomer(this);
 			for (int i = 0; i < numberOfCustomers; i++)
 			{
-				customers[i].interactiveComponent.active = false;
+				customers[i].Disable();
 			}
 		}
 	}
@@ -83,7 +90,13 @@ public class CustomersCluster : MonoBehaviour
 	{
 		foodsEaten++;
 		if(foodsEaten == numberOfCustomers)
-			return true;
+        {
+            for (int i = 0; i < numberOfCustomers; i++)
+            {
+                customers[i].SetDestination(CustomersManager.singleton.exit, DeleteCustomers);
+            }
+            return true;
+        }
 		return false;
 	}
 
