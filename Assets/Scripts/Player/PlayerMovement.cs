@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] float speed = 1f;
 	[SerializeField] float maxSpeed = 5f;
 	[SerializeField] float jumpForce = 10f;
+	[SerializeField] float maxHeight = 8f;
 
 	Vector3 moveAxis = Vector3.zero;
 	bool canJump = false;
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 		// Get movement input
 		moveAxis = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		// Jumping
-		if (canJump && Input.GetKeyDown(KeyCode.Space) && transform.position.y < 6f){
+		if (canJump && Input.GetKeyDown(KeyCode.Space) && transform.position.y < maxHeight){
 			rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
 		}
 	}

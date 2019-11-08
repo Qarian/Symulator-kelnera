@@ -11,7 +11,6 @@ public class CustomersManager : MonoBehaviour
     [SerializeField] GameObject foodPrefab = default;
     [SerializeField] Queue queue = default;
 
-    [Space]
     [Header("Times")]
     [SerializeField] float customersFoodChoosingTime = 4f;
     [SerializeField] float foodSpawnTime = 10f;
@@ -24,13 +23,26 @@ public class CustomersManager : MonoBehaviour
     [HideInInspector] public List<Table> freeTables = new List<Table>();
     private List<Transform> foodSpawnPoints = new List<Transform>();
 
-    public static CustomersManager singleton;
+	#region singleton
+	public static CustomersManager singleton;
     public void Awake()
     {
         singleton = this;
     }
+	#endregion
 
-    private void Start()
+	private void OnValidate()
+	{
+		if (tablesTransform.childCount == 0)
+			Debug.LogError("Tables Transform don't have tables", tablesTransform);
+		for (int i = 0; i < tablesTransform.childCount; i++)
+		{
+			if (! tablesTransform.GetChild(i).GetComponent<Table>())
+				Debug.LogError(tablesTransform.GetChild(i).name + " isn't Table", tablesTransform.GetChild(i));
+		}
+	}
+
+	private void Start()
     {
         for (int i = 0; i < tablesTransform.childCount; i++)
         {
