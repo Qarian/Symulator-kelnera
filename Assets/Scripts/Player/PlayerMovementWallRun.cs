@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementWallRun : MonoBehaviour
 {
 	[SerializeField] Transform groundChecker;
 
@@ -8,12 +8,11 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] float speed = 1f;
 	[SerializeField] float maxSpeed = 5f;
 	[SerializeField] float jumpForce = 10f;
-	[SerializeField] float maxHeight = 8f;
 
 	Vector3 moveAxis = Vector3.zero;
 	bool onGround = false;
-	bool canJump = false;
-	
+	bool canJump = true;
+
 	[HideInInspector]
 	public Rigidbody rb;
 
@@ -21,28 +20,19 @@ public class PlayerMovement : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 	}
-	
+
 	void Update()
 	{
 		// Get movement input
 		moveAxis = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		// Jumping
-		if (canJump && Input.GetKeyDown(KeyCode.Space)){
+		if (canJump && Input.GetKeyDown(KeyCode.Space))
+		{
 			if (!onGround)
 				canJump = false;
 			rb.AddForce(transform.up * jumpForce, ForceMode.VelocityChange);
 		}
 		CheckGround();
-	}
-	
-	// Calculate valocity of player
-    private void FixedUpdate()
-	{
-		Vector3 accelaration = Vector3.zero;
-		accelaration += moveAxis.z * transform.forward;
-		accelaration += moveAxis.x * transform.right;
-		accelaration = accelaration.normalized * speed * Time.fixedDeltaTime;
-		rb.velocity = Vector3.ClampMagnitude(rb.velocity + accelaration, maxSpeed);
 	}
 
 	private void CheckGround()
@@ -56,5 +46,14 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else
 			onGround = false;
+	}
+
+	private void FixedUpdate()
+	{
+		Vector3 accelaration = Vector3.zero;
+		accelaration += moveAxis.z * transform.forward;
+		accelaration += moveAxis.x * transform.right;
+		accelaration = accelaration.normalized * speed * Time.fixedDeltaTime;
+		rb.velocity = Vector3.ClampMagnitude(rb.velocity + accelaration, maxSpeed);
 	}
 }

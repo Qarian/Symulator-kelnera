@@ -24,7 +24,7 @@ public class Queue : MonoBehaviour
 			}
 		}
 
-        if (currentWaitingClusters == maxWaitingClusters)
+		if (currentWaitingClusters == maxWaitingClusters)
             return false;
 
 		CustomersCluster cluster = Instantiate(customerCluster, queuePositions[maxWaitingClusters-1], Quaternion.identity).GetComponent<CustomersCluster>();
