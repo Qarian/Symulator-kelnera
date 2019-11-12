@@ -1055,7 +1055,7 @@ PrefabInstance:
     - target: {fileID: 4362203240416638679, guid: 5bdddfee3d4d510488a5009f4e876a4b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.105001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4362203240416638679, guid: 5bdddfee3d4d510488a5009f4e876a4b,
         type: 3}
@@ -1112,6 +1112,11 @@ PrefabInstance:
       propertyPath: foodSpawnPointsTransform
       value: 
       objectReference: {fileID: 1939442254}
+    - target: {fileID: 5972146250391106749, guid: 5bdddfee3d4d510488a5009f4e876a4b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bdddfee3d4d510488a5009f4e876a4b, type: 3}
 --- !u!1 &1173414532
