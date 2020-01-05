@@ -41,13 +41,6 @@ public class CustomersCluster : MonoBehaviour
 		}
 	}
 
-    Customer InstantiateCustomer(Vector3 position)
-    {
-        //TODO: Pooling
-        GameObject newCustomer = Instantiate(customerPrefab, position, Quaternion.identity, GameManager.singleton.transform);
-        return newCustomer.GetComponent<Customer>();
-    }
-
     // Move cluster to next position in queue
     public void MoveCustomers()
 	{
@@ -91,20 +84,32 @@ public class CustomersCluster : MonoBehaviour
 		foodsEaten++;
 		if(foodsEaten == numberOfCustomers)
         {
-            for (int i = 0; i < numberOfCustomers; i++)
-            {
-                customers[i].SetDestination(CustomersManager.singleton.exit, DeleteCustomers);
-            }
+            LeaveRestaurant();
             return true;
         }
 		return false;
 	}
 
-    void DeleteCustomers()
+    public void LeaveRestaurant()
+    {
+        for (int i = 0; i < numberOfCustomers; i++)
+        {
+            customers[i].SetDestination(CustomersManager.singleton.exit, DeleteCustomers);
+        }
+    }
+
+    private void DeleteCustomers()
     {
         for (int i = 0; i < numberOfCustomers; i++)
         {
             Destroy(customers[i].gameObject);
         }
+    }
+
+    private Customer InstantiateCustomer(Vector3 position)
+    {
+        //TODO: Pooling
+        GameObject newCustomer = Instantiate(customerPrefab, position, Quaternion.identity, GameManager.singleton.transform);
+        return newCustomer.GetComponent<Customer>();
     }
 }

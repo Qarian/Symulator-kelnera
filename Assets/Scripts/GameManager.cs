@@ -1,10 +1,14 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections;
+using UnityEngine;
 using TMPro;
 
 public class GameManager : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI moneyUI = default;
+
+    [Space]
+    [Tooltip("In game time in minutes")]
+    [SerializeField] float dayDuration = 6;
 
 	private int score = 0;
 
@@ -18,6 +22,15 @@ public class GameManager : MonoBehaviour
     {
 		score = 0;
 		moneyUI.text = score.ToString();
+        StartCoroutine(GameTimer());
+    }
+
+    private IEnumerator GameTimer()
+    {
+        yield return new WaitForSeconds(dayDuration * 60);
+		//TODO some UI indicator
+		Debug.LogWarning("END!");
+		CustomersManager.singleton.EndDay();
     }
 
 	private void Update()

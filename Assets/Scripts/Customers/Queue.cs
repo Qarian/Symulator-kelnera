@@ -4,12 +4,20 @@ using System.Collections.Generic;
 public class Queue : MonoBehaviour
 {
 	[SerializeField] GameObject customerCluster = default;
-	private List<CustomersCluster> clusters = new List<CustomersCluster>();
-
+    [SerializeField] GameObject barrier = default;
+	
 	public static Vector3[] queuePositions;
+
+    private List<CustomersCluster> clusters = new List<CustomersCluster>();
 
     int maxWaitingClusters;
 	int currentWaitingClusters = 0;
+
+	private void Start()
+	{
+		barrier.SetActive(false);
+	}
+
 	// Instantiate cluster of 1 - 4 customers 
 	public bool GenerateNewCluster()
 	{
@@ -43,4 +51,13 @@ public class Queue : MonoBehaviour
 			cluster.MoveCustomers();
 		}
 	}
+
+    public void CloseQueue()
+    {
+        foreach (CustomersCluster cluster in clusters)
+        {
+            cluster.LeaveRestaurant();
+        }
+        barrier.SetActive(true);
+    }
 }

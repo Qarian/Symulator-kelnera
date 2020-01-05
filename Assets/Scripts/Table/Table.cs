@@ -47,7 +47,6 @@ public class Table : MonoBehaviour
 	private void PlaceOrder()
 	{
         orderSphere.SetActive(false);
-        Debug.Log(sittingCustomers);
         CustomersManager.singleton.OrderFood(id, sittingCustomers.numberOfCustomers);
 	}
 	

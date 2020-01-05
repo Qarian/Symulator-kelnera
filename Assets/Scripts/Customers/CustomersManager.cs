@@ -14,7 +14,7 @@ public class CustomersManager : MonoBehaviour
     [Header("Times")]
     [SerializeField] float customersFoodChoosingTime = 4f;
     [SerializeField] float foodSpawnTime = 10f;
-    public float customersEatingTime = 5f;
+    [SerializeField] float customersEatingTime = 5f;
     [SerializeField] float newCustomerTime = 8f;
 
     public static CustomersCluster selectedCustomers;
@@ -22,6 +22,8 @@ public class CustomersManager : MonoBehaviour
     private List<Table> tables = new List<Table>();
     [HideInInspector] public List<Table> freeTables = new List<Table>();
     private List<Transform> foodSpawnPoints = new List<Transform>();
+
+	private IEnumerator customerSpawning;
 
 	#region singleton
 	public static CustomersManager singleton;
@@ -43,12 +45,12 @@ public class CustomersManager : MonoBehaviour
         {
             foodSpawnPoints.Add(child);
         }
-
+		customerSpawning = NewCustomers();
         //Start spawning customers
-        StartCoroutine(NewCustomers());
+        StartCoroutine(customerSpawning);
     }
 
-    IEnumerator NewCustomers()
+    private IEnumerator NewCustomers()
     {
         while (true)
         {
@@ -84,7 +86,7 @@ public class CustomersManager : MonoBehaviour
     }
 
     // Customers choose meal
-    IEnumerator TimeToOrder(Table table)
+    private IEnumerator TimeToOrder(Table table)
     {
         yield return new WaitForSeconds(customersFoodChoosingTime);
         table.ActivateOrder();
@@ -96,7 +98,7 @@ public class CustomersManager : MonoBehaviour
     }
 
     //Spawn food after set time
-    IEnumerator SpawnFood(int id, int quatity)
+    private IEnumerator SpawnFood(int id, int quatity)
     {
         yield return new WaitForSeconds(foodSpawnTime);
         for (int i = 0; i < quatity; i++)
@@ -115,4 +117,12 @@ public class CustomersManager : MonoBehaviour
         }
         GameManager.singleton.ChangeScore(10);
     }
+
+	public void EndDay()
+	{
+		queue.CloseQueue();
+		IEnumerator cus = NewCustomers();
+		StopCoroutine(customerSpawning);
+		//TODO keep track of customers inside
+	}
 }
