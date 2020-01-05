@@ -15,6 +15,7 @@
             "."
         ],
         "fbxSavePaths": [
+            "Exported",
             "."
         ],
         "selectedFbxPath": 0,
@@ -24,7 +25,7 @@
         "exportModelSettingsSerialize": {
             "exportFormat": 1,
             "animatedSkinnedMesh": false,
-            "mayaCompatibleNaming": true,
+            "mayaCompatibleNaming": false,
             "include": 0,
             "lodLevel": 0,
             "objectPosition": 0,
