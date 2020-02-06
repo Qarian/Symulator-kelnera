@@ -45,7 +45,7 @@ public class CameraSelector : MonoBehaviour
 				Rigidbody rb = hit.rigidbody;
                 currentInteractive = hit.transform.GetComponent<Interactive>();
 				// czy trafiono w coś interaktywnego
-				if (currentInteractive != null && currentInteractive.active)
+				if (currentInteractive && currentInteractive.active)
 				{
 					size += crosshairChangeSpeed * Time.deltaTime;
 					if (Input.GetKeyDown(KeyCode.E))
@@ -54,7 +54,7 @@ public class CameraSelector : MonoBehaviour
 				}
 
 				// czy trafiono w coś do podnoszenia
-				if (rb != null && !rb.isKinematic)
+				if (rb && !rb.isKinematic)
 				{
                     // Czy naciśnięto przycisk
                     if (Input.GetMouseButtonDown(0))
@@ -66,7 +66,7 @@ public class CameraSelector : MonoBehaviour
 		else
 		{
 			holdingObject.transform.position = holdingPoint.position;
-			if (currentInteractive != null && currentInteractive.active)
+			if (currentInteractive && currentInteractive.active)
             {
                 //size += crosshairChangeSpeed * Time.deltaTime;
                 if (Input.GetKeyDown(KeyCode.E))
@@ -92,7 +92,7 @@ public class CameraSelector : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (holdingObject != null)
+		if (holdingObject)
 		{
 			if (!grabbed)
 			{
@@ -120,7 +120,7 @@ public class CameraSelector : MonoBehaviour
 		
 
 		food = rb.GetComponent<FoodScript>();
-		if (food != null)
+		if (food)
 			food.taken = true;
 	}
 
@@ -131,7 +131,7 @@ public class CameraSelector : MonoBehaviour
 		holdingObject.transform.SetParent(null);
 		holdingObject = null;
 
-		if (food != null)
+		if (food)
 		{
 			food.taken = false;
 			food = null;

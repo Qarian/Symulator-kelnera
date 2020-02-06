@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
 	private void EndTime()
 	{
-		Debug.LogWarning("Time Ended!");
+		Debug.Log("Time Ended!");
 		CustomersManager.singleton.EndTime();
 	}
 

@@ -7,7 +7,7 @@ public class PlayerMovementWallRun : MonoBehaviour
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
 	[Space]
-	[SerializeField] private float speed = 10f;
+	[SerializeField] private float accelaration = 10f;
 	[SerializeField] private float maxSpeed = 10f;
 	[SerializeField, Range(0, 1), Tooltip("0 - no vertical movement while wall running,\n1 - no effect")]
 	private float verticalSpeedModifierWallRunning = 0.85f;
@@ -83,18 +83,17 @@ public class PlayerMovementWallRun : MonoBehaviour
 	{
 		if (status == Wall.No)
 		{
-			Vector3 accelaration = Vector3.zero;
-			accelaration += moveAxis.z * playerTransform.forward;
-			accelaration += moveAxis.x * playerTransform.right;
-			accelaration = accelaration.normalized * speed * Time.fixedDeltaTime;
-			rb.velocity = Vector3.ClampMagnitude(rb.velocity + accelaration, maxSpeed);
+			Vector3 speedGain = Vector3.zero;
+			speedGain += moveAxis.z * playerTransform.forward;
+			speedGain += moveAxis.x * playerTransform.right;
+			speedGain = speedGain.normalized * accelaration * Time.fixedDeltaTime;
+			rb.velocity = Vector3.ClampMagnitude(rb.velocity + speedGain, maxSpeed);
 		}
 		else
 		{
 			Vector3 velocity = rb.velocity;
-			//if(velocity.y < 0)
-				velocity.y *= verticalSpeedModifierWallRunning * Time.fixedDeltaTime;
-			velocity += (wallDir * speed * Time.fixedDeltaTime);
+			velocity.y *= verticalSpeedModifierWallRunning * Time.fixedDeltaTime;
+			velocity += (wallDir * accelaration * Time.fixedDeltaTime);
 
 			// Smooth going through acute angles
 			float velocityChange = lastVelocity.magnitude / velocity.magnitude;

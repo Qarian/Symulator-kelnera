@@ -26,7 +26,7 @@ public class Customer : MonoBehaviour
 
     public void Update()
     {
-        if (action != null && agent.remainingDistance > 0f && agent.remainingDistance < 1f)
+        if (!(action is null) && agent.remainingDistance > 0f && agent.remainingDistance < 1f)
         {
             action();
             action = null;

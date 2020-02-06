@@ -46,7 +46,6 @@ public class Queue : MonoBehaviour
 	public void TakeCluster(CustomersCluster takenCustomer)
 	{
         currentWaitingClusters--;
-		Debug.Log(takenCustomer.numberOfCustomers);
 		clusters.Remove(takenCustomer);
 		foreach (CustomersCluster cluster in clusters)
 		{

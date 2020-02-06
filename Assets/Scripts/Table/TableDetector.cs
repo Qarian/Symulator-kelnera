@@ -11,7 +11,7 @@ public class TableDetector : MonoBehaviour
 	private void Update()
 	{
 		// if food is on table, check if it isn't moving
-		if (targetFoodRb != null)
+		if (targetFoodRb)
 		{
 			if (targetFoodScript.taken == false && targetFoodRb.velocity == Vector3.zero)
 				FoodOnTable();
@@ -28,7 +28,7 @@ public class TableDetector : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
 		targetFoodScript = collider.GetComponent<FoodScript>();
-		if (targetFoodScript != null && targetFoodScript.color == tableComponent.color)
+		if (targetFoodScript && targetFoodScript.color == tableComponent.color)
 		{
 			targetFoodRb = collider.GetComponent<Rigidbody>();
 		}

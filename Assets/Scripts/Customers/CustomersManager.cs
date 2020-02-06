@@ -118,7 +118,7 @@ public class CustomersManager : MonoBehaviour
     public void FreeTable(Table table)
     {
         freeTables.Add(table);
-        if (selectedCustomers != null)
+        if (selectedCustomers)
         {
             table.Enable();
         }
