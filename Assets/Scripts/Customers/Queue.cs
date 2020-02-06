@@ -43,9 +43,11 @@ public class Queue : MonoBehaviour
 	}
 
 	// Move all clusters in queue 
-	public void MoveClusters()
+	public void TakeCluster(CustomersCluster takenCustomer)
 	{
         currentWaitingClusters--;
+		Debug.Log(takenCustomer.numberOfCustomers);
+		clusters.Remove(takenCustomer);
 		foreach (CustomersCluster cluster in clusters)
 		{
 			cluster.MoveCustomers();
@@ -56,7 +58,9 @@ public class Queue : MonoBehaviour
     {
         foreach (CustomersCluster cluster in clusters)
         {
-            cluster.LeaveRestaurant();
+			Debug.Log(cluster.numberOfCustomers);
+
+			cluster.LeaveRestaurant();
         }
         barrier.SetActive(true);
     }

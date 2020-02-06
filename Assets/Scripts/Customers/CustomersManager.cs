@@ -23,7 +23,8 @@ public class CustomersManager : MonoBehaviour
     [HideInInspector] public List<Table> freeTables = new List<Table>();
     private List<Transform> foodSpawnPoints = new List<Transform>();
 
-	private IEnumerator customerSpawning;
+    private bool spawningCustomers = true;
+    int acceptedCustomers = 0;
 
 	#region singleton
 	public static CustomersManager singleton;
@@ -35,24 +36,25 @@ public class CustomersManager : MonoBehaviour
 
 	private void Start()
     {
+        // Load tables
         for (int i = 0; i < tablesTransform.childCount; i++)
         {
             tables.Add(tablesTransform.GetChild(i).GetComponent<Table>());
             freeTables.Add(tables[i]);
             tables[i].id = i;
         }
+        // Add loaded tables to list of free tables
         foreach (Transform child in foodSpawnPointsTransform)
         {
             foodSpawnPoints.Add(child);
         }
-		customerSpawning = NewCustomers();
-        //Start spawning customers
-        StartCoroutine(customerSpawning);
+
+        StartCoroutine(SpawnCustomers());
     }
 
-    private IEnumerator NewCustomers()
+    private IEnumerator SpawnCustomers()
     {
-        while (true)
+        while (spawningCustomers)
         {
             queue.GenerateNewCluster();
             yield return new WaitForSeconds(newCustomerTime);
@@ -72,6 +74,7 @@ public class CustomersManager : MonoBehaviour
     // Player choose table for customers
     public CustomersCluster ChooseTable(Table table)
     {
+        // make free tables notselectable
         foreach (Table freeTable in freeTables)
         {
             freeTable.Disable();
@@ -79,9 +82,13 @@ public class CustomersManager : MonoBehaviour
         CustomersCluster ret = selectedCustomers;
         selectedCustomers.AssignToTable(table);
         freeTables.Remove(table);
-        selectedCustomers = null;
-        queue.MoveClusters();
+        acceptedCustomers++;
+        // Move queue
+        queue.TakeCluster(selectedCustomers);
+        // TODO: start counting time when customers come to table
         StartCoroutine(TimeToOrder(table));
+        // clear selection
+        selectedCustomers = null;
         return ret;
     }
 
@@ -118,11 +125,18 @@ public class CustomersManager : MonoBehaviour
         GameManager.singleton.ChangeScore(10);
     }
 
-	public void EndDay()
+    public void RemoveCluster()
+    {
+        acceptedCustomers--;
+        if (!spawningCustomers && acceptedCustomers == 0)
+            GameManager.singleton.EndDay();
+    }
+
+	public void EndTime()
 	{
 		queue.CloseQueue();
-		IEnumerator cus = NewCustomers();
-		StopCoroutine(customerSpawning);
-		//TODO keep track of customers inside
+        spawningCustomers = false;
+        if (acceptedCustomers == 0)
+            GameManager.singleton.EndDay();
 	}
 }

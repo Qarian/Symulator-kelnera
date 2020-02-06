@@ -27,16 +27,26 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator GameTimer()
     {
-        yield return new WaitForSeconds(dayDuration * 60);
 		//TODO some UI indicator
-		Debug.LogWarning("END!");
-		CustomersManager.singleton.EndDay();
+		yield return new WaitForSeconds(dayDuration * 60);
+		EndTime();
     }
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 			Application.Quit();
+	}
+
+	private void EndTime()
+	{
+		Debug.LogWarning("Time Ended!");
+		CustomersManager.singleton.EndTime();
+	}
+
+	public void EndDay()
+	{
+		Debug.Log("Day ended!");
 	}
 
 	public void ChangeScore(int change)

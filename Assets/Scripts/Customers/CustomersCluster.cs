@@ -104,6 +104,7 @@ public class CustomersCluster : MonoBehaviour
         {
             Destroy(customers[i].gameObject);
         }
+		CustomersManager.singleton.RemoveCluster();
     }
 
     private Customer InstantiateCustomer(Vector3 position)
