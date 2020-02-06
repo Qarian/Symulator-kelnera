@@ -3,56 +3,56 @@ using DG.Tweening;
 
 public class PlayerMovementWallRun : MonoBehaviour
 {
-	[SerializeField] Transform groundChecker = default;
-    [SerializeField] KeyCode jumpKey = KeyCode.Space;
+	[SerializeField] private Transform groundChecker = default;
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
 	[Space]
-	[SerializeField] float speed = 10f;
-	[SerializeField] float maxSpeed = 10f;
+	[SerializeField] private float speed = 10f;
+	[SerializeField] private float maxSpeed = 10f;
 	[SerializeField, Range(0, 1), Tooltip("0 - no vertical movement while wall running,\n1 - no effect")]
-	float verticalSpeedModifierWallRunning = 0.85f;
+	private float verticalSpeedModifierWallRunning = 0.85f;
 
-	[SerializeField] float jumpForce = 10f;
-    [SerializeField] float jumpOfWallForce = 4f;
-    [SerializeField] float wallJumpTime = 0.5f;
+	[SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float jumpOfWallForce = 4f;
+    [SerializeField] private float wallJumpTime = 0.5f;
 
 	[Header("Camera modification")]
-	[SerializeField] Transform cameraTransform = default;
-	[SerializeField] float maxCameraRotation = 30f;
-	[SerializeField] float rotationSpeed = 0.5f;
+	[SerializeField] private Transform cameraTransform = default;
+	[SerializeField] private float maxCameraRotation = 30f;
+	[SerializeField] private float rotationSpeed = 0.5f;
 
 	// Rotating camera during wall running
-	float cameraRotationTarget = 0;
-	float currentCameraRotation = 0;
+	private float cameraRotationTarget = 0;
+	private float currentCameraRotation = 0;
 
 	// Componets
-	Rigidbody rb;
-    Transform playerTransform;
+	private Rigidbody rb;
+	private Transform playerTransform;
 
 	// Vectors relative to player
-    Vector3 moveAxis = Vector3.zero;
-    Vector3 position;
-    Vector3 right;
+	private Vector3 moveAxis = Vector3.zero;
+	private Vector3 position;
+	private Vector3 right;
 
 	// Jumping
-    bool onGround = false;
-	bool canJump = true;
+	private bool onGround = false;
+	private bool canJump = true;
 
 	// Properties for wall running
-    enum Wall { Left = -1, No = 0, Right = 1}
-    Wall status = Wall.No;
-    Vector3 wallDir;
-    Vector3 wallCheckDir;
-	Collider wallRunningCollider;
-    float leftWallTime = 0f;
-	Vector3 lastVelocity;
+	private enum Wall { Left = -1, No = 0, Right = 1}
+	private Wall status = Wall.No;
+	private Vector3 wallDir;
+	private Vector3 wallCheckDir;
+	private Collider wallRunningCollider;
+	private float leftWallTime = 0f;
+	private Vector3 lastVelocity;
 
 	// Raycast properties
-    const float wallRaycastLength = 0.8f;
-	int raycastLayerMask;
-	RaycastHit raycastHit;
+	private const float wallRaycastLength = 0.8f;
+	private int raycastLayerMask;
+	private RaycastHit raycastHit;
 
-	void Start()
+	private void Start()
 	{
 		rb = GetComponent<Rigidbody>();
         playerTransform = transform;
@@ -61,7 +61,7 @@ public class PlayerMovementWallRun : MonoBehaviour
 		raycastLayerMask = ~raycastLayerMask;
 	}
 
-	void Update()
+	private void Update()
 	{
         position = playerTransform.position;
         right = playerTransform.right;
