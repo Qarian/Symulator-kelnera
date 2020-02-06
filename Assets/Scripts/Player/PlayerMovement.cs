@@ -2,13 +2,12 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-	[SerializeField] Transform groundChecker;
+	[SerializeField] Transform groundChecker = default;
 
 	[Space]
 	[SerializeField] float speed = 1f;
 	[SerializeField] float maxSpeed = 5f;
 	[SerializeField] float jumpForce = 10f;
-	[SerializeField] float maxHeight = 8f;
 
 	Vector3 moveAxis = Vector3.zero;
 	bool onGround = false;

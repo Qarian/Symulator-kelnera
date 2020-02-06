@@ -1,38 +1,56 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMovementWallRun : MonoBehaviour
 {
-	[SerializeField] Transform groundChecker;
+	[SerializeField] Transform groundChecker = default;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
 	[Space]
-	[SerializeField] float speed = 1f;
-	[SerializeField] float maxSpeed = 5f;
+	[SerializeField] float speed = 10f;
+	[SerializeField] float maxSpeed = 10f;
+	[SerializeField, Range(0, 1), Tooltip("0 - no vertical movement while wall running,\n1 - no effect")]
+	float verticalSpeedModifierWallRunning = 0.85f;
+
 	[SerializeField] float jumpForce = 10f;
     [SerializeField] float jumpOfWallForce = 4f;
     [SerializeField] float wallJumpTime = 0.5f;
 
-    Rigidbody rb;
+	[Header("Camera modification")]
+	[SerializeField] Transform cameraTransform = default;
+	[SerializeField] float maxCameraRotation = 30f;
+	[SerializeField] float rotationSpeed = 0.5f;
+
+	// Rotating camera during wall running
+	float cameraRotationTarget = 0;
+	float currentCameraRotation = 0;
+
+	// Componets
+	Rigidbody rb;
     Transform playerTransform;
 
+	// Vectors relative to player
     Vector3 moveAxis = Vector3.zero;
     Vector3 position;
     Vector3 right;
 
+	// Jumping
     bool onGround = false;
 	bool canJump = true;
 
-    enum Wall {No, Left, Right}
+	// Properties for wall running
+    enum Wall { Left = -1, No = 0, Right = 1}
     Wall status = Wall.No;
     Vector3 wallDir;
     Vector3 wallCheckDir;
 	Collider wallRunningCollider;
     float leftWallTime = 0f;
+	Vector3 lastVelocity;
 
+	// Raycast properties
     const float wallRaycastLength = 0.8f;
 	int raycastLayerMask;
 	RaycastHit raycastHit;
-
 
 	void Start()
 	{
@@ -53,6 +71,12 @@ public class PlayerMovementWallRun : MonoBehaviour
 		CheckGround();
         WallRunning();
         Jumping();
+
+		// Rotate camera
+		Vector3 cameraRotation = cameraTransform.localRotation.eulerAngles;
+		currentCameraRotation = Mathf.Lerp(currentCameraRotation, cameraRotationTarget, Time.deltaTime * rotationSpeed);
+		cameraRotation.z = currentCameraRotation;
+		cameraTransform.localRotation = Quaternion.Euler(cameraRotation);
     }
 
 	private void FixedUpdate()
@@ -68,73 +92,90 @@ public class PlayerMovementWallRun : MonoBehaviour
 		else
 		{
 			Vector3 velocity = rb.velocity;
-			if(velocity.y < 0)
-				velocity.y *= 0.9f * Time.fixedDeltaTime;
+			//if(velocity.y < 0)
+				velocity.y *= verticalSpeedModifierWallRunning * Time.fixedDeltaTime;
 			velocity += (wallDir * speed * Time.fixedDeltaTime);
+
+			// Smooth going through acute angles
+			float velocityChange = lastVelocity.magnitude / velocity.magnitude;
+			if (velocityChange > 1f)
+				// Something lower than velocityChange for big velocityChange
+				velocity *= Mathf.Sqrt(velocityChange) * (1 + Mathf.Log(velocityChange));
+
+			// TODO: maxSpeed should clamp only velocity on x and z
 			rb.velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
 		}
+		lastVelocity = rb.velocity;
 	}
 
+	#region WallRunning
 	private void WallRunning()
     {
-		// Stop wall running
-        if (Input.GetKeyUp(jumpKey) && status != Wall.No)
+		// Start Wall running
+		if (status == Wall.No)
+		{
+			if (Input.GetKey(jumpKey) && !onGround && (Time.time - leftWallTime) >= wallJumpTime)
+				CheckForWall();
+			return;
+		}
+
+		// Jump off wall
+		if (Input.GetKeyUp(jumpKey))
         {
             leftWallTime = Time.time;
             StopWallRunning();
             return;
         }
-        
-		// Start Wall running
-        else if (status == Wall.No)
-        {
-            if (Input.GetKey(jumpKey) && !onGround && (Time.time - leftWallTime) >= wallJumpTime)
-				CheckWall();
-        }
-        else
-        {
-			// Check if wall ended
-            bool rayFromWall = Physics.Raycast(position, wallCheckDir, out raycastHit, wallRaycastLength, raycastLayerMask);
-            if (!rayFromWall)
-                StopWallRunning();
 
-			// Check if another wall is in front of player
-			if (RaycastToSide(status, out raycastHit))
-			{
-				if (wallRunningCollider != raycastHit.collider)
-					SetWallRunning(status);
-			}
-        }
+		// Check if wall ended
+		bool rayFromWall = Physics.Raycast(position, wallCheckDir, out raycastHit, wallRaycastLength, raycastLayerMask);
+		if (!rayFromWall)
+			StopWallRunning();
+
+		// Check if another wall is in front of player
+		else if (RaycastToSide(status, out raycastHit))
+		{
+			if (wallRunningCollider != raycastHit.collider)
+				SetWallRunning(status);
+		}
     }
 
-    private void StopWallRunning()
-    {
-		Debug.Log("Stop wall running");
-        rb.useGravity = true;
-        status = Wall.No;
-        canJump = true;
-    }
-
-    private void CheckWall()
-    {
-        bool rayHit = RaycastToSide(Wall.Left, out raycastHit);
+	private void CheckForWall()
+	{
+		bool rayHit = RaycastToSide(Wall.Left, out raycastHit);
 		if (rayHit)
-        {
-            if (Vector3.Dot(raycastHit.normal, Vector3.up) < 0.001f)
-                SetWallRunning(Wall.Left);
-        }
+		{
+			if (Vector3.Dot(raycastHit.normal, Vector3.up) < 0.001f)
+				SetWallRunning(Wall.Left);
+		}
 
 		rayHit = RaycastToSide(Wall.Right, out raycastHit);
-        if (rayHit)
-        {
-            if (Vector3.Dot(raycastHit.normal, Vector3.up) < 0.001f)
-            {
-                float rightDistance = Vector3.Distance(raycastHit.point, position);
-                if (rightDistance < wallRaycastLength)
-                    SetWallRunning(Wall.Right);
-            }
-        }
-    }
+		if (rayHit)
+		{
+			if (Vector3.Dot(raycastHit.normal, Vector3.up) < 0.001f)
+			{
+				float rightDistance = Vector3.Distance(raycastHit.point, position);
+				if (rightDistance < wallRaycastLength)
+					SetWallRunning(Wall.Right);
+			}
+		}
+	}
+
+	private void SetWallRunning(Wall side)
+	{
+		wallRunningCollider = raycastHit.collider;
+		status = side;
+		wallCheckDir = -raycastHit.normal;
+		if (side == Wall.Left)
+			wallDir = Vector3.Cross(raycastHit.normal, Vector3.up);
+		else
+			wallDir = -1 * Vector3.Cross(raycastHit.normal, Vector3.up);
+		rb.useGravity = false;
+		canJump = false;
+
+		// TODO: Set 
+		cameraRotationTarget = maxCameraRotation * (int)side;
+	}
 
 	private bool RaycastToSide(Wall side, out RaycastHit raycastHit)
 	{
@@ -151,21 +192,17 @@ public class PlayerMovementWallRun : MonoBehaviour
 		return false;
 	}
 
-    private void SetWallRunning(Wall side)
-    {
-		Debug.Log("Set wall running");
-		wallRunningCollider = raycastHit.collider;
-		status = side;
-        wallCheckDir = -raycastHit.normal;
-        if (side == Wall.Left)
-            wallDir = Vector3.Cross(raycastHit.normal, Vector3.up);
-        else
-            wallDir = -1 * Vector3.Cross(raycastHit.normal, Vector3.up);
-        rb.useGravity = false;
-        canJump = false;
-    }
+	private void StopWallRunning()
+	{
+		cameraRotationTarget = 0;
 
-    private void Jumping()
+		rb.useGravity = true;
+		status = Wall.No;
+		canJump = true;
+	}
+	#endregion
+
+	private void Jumping()
     {
         if (canJump && Input.GetKeyDown(jumpKey))
         {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -35,7 +34,8 @@ public class CameraMovement : MonoBehaviour
 			player.Rotate(0, xAngle, 0);
 			
 			rotationY = Mathf.Clamp(rotationY + yAngle, cameraYbounds.x, cameraYbounds.y);
-			transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
+			Vector3 currentRotation = transform.localEulerAngles;
+			transform.localEulerAngles = new Vector3(-rotationY, currentRotation.y, currentRotation.z);
 		}
 
 		if (Input.GetKeyDown(mouseModeSwitch))
