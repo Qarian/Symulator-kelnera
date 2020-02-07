@@ -8,6 +8,7 @@ TagManager:
   - Enviroment
   - Table
   - Queue
+  - Light
   layers:
   - Default
   - TransparentFX
