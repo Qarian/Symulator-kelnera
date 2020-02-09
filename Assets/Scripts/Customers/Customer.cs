@@ -5,11 +5,11 @@ using System;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Customer : MonoBehaviour
 {
-    NavMeshAgent agent;
-    Interactive interactiveComponent;
-    CustomersCluster cluster;
+    private NavMeshAgent agent;
+    private Interactive interactiveComponent;
+    private CustomersCluster cluster;
 
-    Action action;
+    private Action action;
 
     public CustomersCluster Cluster {
         set { 
@@ -26,7 +26,9 @@ public class Customer : MonoBehaviour
 
     public void Update()
     {
-        if (!(action is null) && agent.remainingDistance > 0f && agent.remainingDistance < 1f)
+        if (!(action is null) &&
+            !agent.pathPending &&
+            agent.remainingDistance < agent.stoppingDistance)
         {
             action();
             action = null;
@@ -36,6 +38,11 @@ public class Customer : MonoBehaviour
     public void Disable()
     {
         interactiveComponent.active = false;
+    }
+
+    public void GoToTable(Transform chairTransform)
+    {
+        SetDestination(chairTransform, () => cluster.CustomerArrivedAtTable());
     }
 
     // Set destination of NavMesh using Transform component

@@ -11,11 +11,18 @@ public class CustomersManager : MonoBehaviour
     [SerializeField] GameObject foodPrefab = default;
     [SerializeField] Queue queue = default;
 
-    [Header("Times")]
-    [SerializeField] float customersFoodChoosingTime = 4f;
-    [SerializeField] float foodSpawnTime = 10f;
-    [SerializeField] float customersEatingTime = 5f;
+    [Header("Times (seconds)")]
     [SerializeField] float newCustomerTime = 8f;
+    [SerializeField] float foodSpawnTime = 10f;
+    [SerializeField] float customersFoodChoosingTime = 4f;
+    [SerializeField] float customersEatingTime = 5f;
+
+    [Header("Patience (seconds)")]
+    public float queuePatienceTime = 25f;
+    public float tablePatienceTime = 40f;
+
+    [Header("Points")]
+    public int pointsFromTable = 10;
 
     public static CustomersCluster selectedCustomers;
 
@@ -82,21 +89,25 @@ public class CustomersManager : MonoBehaviour
         CustomersCluster ret = selectedCustomers;
         selectedCustomers.AssignToTable(table);
         freeTables.Remove(table);
+        // Increase number of custer clusters inside building
         acceptedCustomers++;
-        // Move queue
-        queue.TakeCluster(selectedCustomers);
-        // TODO: start counting time when customers come to table
-        StartCoroutine(TimeToOrder(table));
+        TakeClusterFromQueue(selectedCustomers);
         // clear selection
         selectedCustomers = null;
         return ret;
     }
 
     // Customers choose meal
-    private IEnumerator TimeToOrder(Table table)
+    public IEnumerator WaitForOrder(Table table)
+    {
+        yield return new WaitForSeconds(customersEatingTime);
+        table.ActivateOrder();
+    }
+
+    public IEnumerator WaitForEating(CustomersCluster customersCluster)
     {
         yield return new WaitForSeconds(customersFoodChoosingTime);
-        table.ActivateOrder();
+        customersCluster.CustomerAteFood();
     }
 
     public void OrderFood(int id, int quatity)
@@ -118,11 +129,11 @@ public class CustomersManager : MonoBehaviour
     public void FreeTable(Table table)
     {
         freeTables.Add(table);
+        // Check if another customer is selected
         if (selectedCustomers)
         {
             table.Enable();
         }
-        GameManager.singleton.ChangeScore(10);
     }
 
     public void RemoveCluster()
@@ -139,4 +150,9 @@ public class CustomersManager : MonoBehaviour
         if (acceptedCustomers == 0)
             GameManager.singleton.EndDay();
 	}
+
+    public void TakeClusterFromQueue(CustomersCluster customersCluster)
+    {
+        queue.TakeCluster(customersCluster);
+    }
 }

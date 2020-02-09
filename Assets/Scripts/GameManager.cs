@@ -6,8 +6,7 @@ public class GameManager : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI moneyUI = default;
 
-    [Space]
-    [Tooltip("In game time in minutes")]
+    [Space, Tooltip("In game time in minutes")]
     [SerializeField] float dayDuration = 6;
 
 	private int score = 0;

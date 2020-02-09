@@ -14,6 +14,7 @@ public class Table : MonoBehaviour
 
 	private void Start()
 	{
+		// To be sure that color will be visible to player
         SetColor();
 
         Interactive interactiveSphere = orderSphere.AddComponent<Interactive>();
@@ -52,11 +53,16 @@ public class Table : MonoBehaviour
 	
 	public void EatFood(Rigidbody food)
 	{
+		// TODO: Pooling for food
 		Destroy(food.gameObject);
-		if(sittingCustomers.EatFood())
-		{
-            CustomersManager.singleton.FreeTable(this);
-		}
+		StartCoroutine(CustomersManager.singleton.WaitForEating(sittingCustomers));
+	}
+
+	public void ResetTable()
+	{
+		orderSphere.SetActive(false);
+		sittingCustomers = null;
+		CustomersManager.singleton.FreeTable(this);
 	}
 	#endregion
 

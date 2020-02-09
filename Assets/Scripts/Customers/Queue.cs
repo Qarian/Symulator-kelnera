@@ -36,21 +36,23 @@ public class Queue : MonoBehaviour
             return false;
 
 		CustomersCluster cluster = Instantiate(customerCluster, queuePositions[maxWaitingClusters-1], Quaternion.identity).GetComponent<CustomersCluster>();
-		clusters.Add(cluster);
 		cluster.Create(Random.Range(1, 5), currentWaitingClusters);
-        currentWaitingClusters++;
+		clusters.Add(cluster);
+		currentWaitingClusters++;
         return true;
 	}
 
 	// Move all clusters in queue 
 	public void TakeCluster(CustomersCluster takenCustomer)
 	{
+		Debug.Log(takenCustomer.numberOfCustomers);
         currentWaitingClusters--;
-		clusters.Remove(takenCustomer);
-		foreach (CustomersCluster cluster in clusters)
+		int index = clusters.IndexOf(takenCustomer);
+		for (int i = index + 1; i < clusters.Count; i++)
 		{
-			cluster.MoveCustomers();
+			clusters[i].MoveClusterInQueue();
 		}
+		clusters.Remove(takenCustomer);
 	}
 
     public void CloseQueue()
