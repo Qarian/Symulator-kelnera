@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 106082565778071735}
   - component: {fileID: 106082565778071729}
   - component: {fileID: 106082565778071734}
+  - component: {fileID: 2552328388100770130}
   m_Layer: 0
   m_Name: Cailing Light
   m_TagString: Untagged
@@ -182,6 +183,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &2552328388100770130
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106082565778071732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &106082567534786602
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,6 +208,7 @@ GameObject:
   - component: {fileID: 106082567534786597}
   - component: {fileID: 106082567534786599}
   - component: {fileID: 106082567534786596}
+  - component: {fileID: 8569793236521610060}
   m_Layer: 0
   m_Name: Cover
   m_TagString: Untagged
@@ -261,3 +277,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &8569793236521610060
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106082567534786602}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
