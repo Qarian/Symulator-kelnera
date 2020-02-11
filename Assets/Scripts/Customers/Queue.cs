@@ -45,7 +45,6 @@ public class Queue : MonoBehaviour
 	// Move all clusters in queue 
 	public void TakeCluster(CustomersCluster takenCustomer)
 	{
-		Debug.Log(takenCustomer.numberOfCustomers);
         currentWaitingClusters--;
 		int index = clusters.IndexOf(takenCustomer);
 		for (int i = index + 1; i < clusters.Count; i++)

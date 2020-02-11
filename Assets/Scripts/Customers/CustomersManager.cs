@@ -7,13 +7,11 @@ public class CustomersManager : MonoBehaviour
     [Header("References")]
     public Transform exit = default;
     [SerializeField] Transform tablesTransform = default;
-    [SerializeField] Transform foodSpawnPointsTransform = default;
-    [SerializeField] GameObject foodPrefab = default;
     [SerializeField] Queue queue = default;
 
     [Header("Times (seconds)")]
     [SerializeField] float newCustomerTime = 8f;
-    [SerializeField] float foodSpawnTime = 10f;
+    public float foodSpawnTime = 10f;
     [SerializeField] float customersFoodChoosingTime = 4f;
     [SerializeField] float customersEatingTime = 5f;
 
@@ -28,7 +26,6 @@ public class CustomersManager : MonoBehaviour
 
     private List<Table> tables = new List<Table>();
     [HideInInspector] public List<Table> freeTables = new List<Table>();
-    private List<Transform> foodSpawnPoints = new List<Transform>();
 
     private bool spawningCustomers = true;
     int acceptedCustomers = 0;
@@ -49,11 +46,6 @@ public class CustomersManager : MonoBehaviour
             tables.Add(tablesTransform.GetChild(i).GetComponent<Table>());
             freeTables.Add(tables[i]);
             tables[i].id = i;
-        }
-        // Add loaded tables to list of free tables
-        foreach (Transform child in foodSpawnPointsTransform)
-        {
-            foodSpawnPoints.Add(child);
         }
 
         StartCoroutine(SpawnCustomers());
@@ -107,23 +99,10 @@ public class CustomersManager : MonoBehaviour
     public IEnumerator WaitForEating(CustomersCluster customersCluster)
     {
         yield return new WaitForSeconds(customersFoodChoosingTime);
-        customersCluster.CustomerAteFood();
-    }
-
-    public void OrderFood(int id, int quatity)
-    {
-        StartCoroutine(SpawnFood(id, quatity));
-    }
-
-    //Spawn food after set time
-    private IEnumerator SpawnFood(int id, int quatity)
-    {
-        yield return new WaitForSeconds(foodSpawnTime);
-        for (int i = 0; i < quatity; i++)
-        {
-            GameObject go = Instantiate(foodPrefab, foodSpawnPoints[id].position + new Vector3(0, i * 0.5f, 0), Quaternion.identity);
-            go.GetComponent<FoodScript>().SetColor(tables[id].color);
-        }
+        if (customersCluster is null)
+            Debug.LogError("Gave food to table without customers");
+        else
+            customersCluster.CustomerAteFood();
     }
 
     public void FreeTable(Table table)

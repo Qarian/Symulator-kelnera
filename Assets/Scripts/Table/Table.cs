@@ -48,7 +48,7 @@ public class Table : MonoBehaviour
 	private void PlaceOrder()
 	{
         orderSphere.SetActive(false);
-        CustomersManager.singleton.OrderFood(id, sittingCustomers.numberOfCustomers);
+		FoodSpawner.singleton.OrderCubeFood(color, sittingCustomers.numberOfCustomers);
 	}
 	
 	public void EatFood(Rigidbody food)
