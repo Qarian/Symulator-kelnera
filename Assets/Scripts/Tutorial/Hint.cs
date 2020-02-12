@@ -6,15 +6,15 @@ using UnityEngine.UI;
 public class Hint : MonoBehaviour
 {
     [SerializeField]
-    private Image symbol;
+    private Image symbol = default;
     [SerializeField]
-    private Color backgroundColor;
+    private Color backgroundColor = default;
     [SerializeField]
-    private Color symbolColor;
+    private Color symbolColor = default;
     [SerializeField]
-    private float distanceToTrigger;
+    private float distanceToTrigger = default;
     [SerializeField]
-    [Range(0, 0.1f)] private float visibilityStep;
+    [Range(0, 0.1f)] private float visibilityStep = default;
 
     private Image image;
     private Color tempBackgroundColor;
