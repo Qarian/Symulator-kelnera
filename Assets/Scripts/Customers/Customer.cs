@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
-using System;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Customer : MonoBehaviour
@@ -12,17 +12,17 @@ public class Customer : MonoBehaviour
     private Action action;
 
     public CustomersCluster Cluster {
-        set { 
+        set {
             cluster = value;
             interactiveComponent.SetAction(cluster.SelectCustomer);
         }
     }
 
     private void Awake()
-	{
-		agent = GetComponent<NavMeshAgent>();
-		interactiveComponent = GetComponent<Interactive>();
-	}
+    {
+        agent = GetComponent<NavMeshAgent>();
+        interactiveComponent = GetComponent<Interactive>();
+    }
 
     public void Update()
     {

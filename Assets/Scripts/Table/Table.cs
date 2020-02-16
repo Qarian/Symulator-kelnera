@@ -51,7 +51,7 @@ public class Table : MonoBehaviour
 		FoodSpawner.singleton.OrderCubeFood(color, sittingCustomers.numberOfCustomers);
 	}
 	
-	public void EatFood(Rigidbody food)
+	public void EatFood(FoodScript food)
 	{
 		// TODO: Pooling for food
 		Destroy(food.gameObject);

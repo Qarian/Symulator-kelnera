@@ -1,46 +1,50 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class TableDetector : MonoBehaviour
 {
-	[SerializeField] Table tableComponent = default;
+	[SerializeField] private Table tableComponent = default;
 
 	// References to food components
-    Rigidbody targetFoodRb;
-	FoodScript targetFoodScript;
+	private List<FoodScript> targetFoodScripts = new List<FoodScript>();
 
 	private void Update()
 	{
 		// if food is on table, check if it isn't moving
-		if (targetFoodRb)
+		foreach (FoodScript food in targetFoodScripts)
 		{
-			if (targetFoodScript.taken == false && targetFoodRb.velocity == Vector3.zero)
-				FoodOnTable();
+			if (food.rigidbody.velocity == Vector3.zero)
+			{
+				FoodOnTable(food);
+				break;
+			}
 		}
 	}
-	
+
 	// Function to run when food is on table
-    private void FoodOnTable()
-    {
-		tableComponent.EatFood(targetFoodRb);
+	private void FoodOnTable(FoodScript food)
+	{
+		targetFoodScripts.Remove(food);
+		tableComponent.EatFood(food);
 	}
 
 	// Check if food entered trigger
-    private void OnTriggerEnter(Collider collider)
-    {
-		targetFoodScript = collider.GetComponent<FoodScript>();
-		if (targetFoodScript && targetFoodScript.color == tableComponent.color)
+	private void OnTriggerEnter(Collider collider)
+	{
+		FoodScript target = collider.GetComponent<FoodScript>();
+		if (target && target.color == tableComponent.color)
 		{
-			targetFoodRb = collider.GetComponent<Rigidbody>();
+			targetFoodScripts.Add(target);
 		}
 	}
 
 	// Check if food exit trigger
 	private void OnTriggerExit(Collider other)
 	{
-		if(other.GetComponent<Rigidbody>() == targetFoodRb)
+		FoodScript removedFood = other.GetComponent<FoodScript>();
+		if (targetFoodScripts.Contains(removedFood))
 		{
-			targetFoodRb = null;
-			targetFoodScript = null;
+			targetFoodScripts.Remove(removedFood);
 		}
 	}
 }

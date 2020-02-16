@@ -1,14 +1,24 @@
 ﻿using UnityEngine;
 
-public class FoodScript : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class FoodScript : Interactive
 {
+	[SerializeField] private Renderer meshRenderer = default;
+	public Transform meshTransform;
+	public new Rigidbody rigidbody;
+
 	[HideInInspector] public Color color;
-	[HideInInspector] public bool taken = false;
+
+	private void Awake()
+	{
+		rigidbody = GetComponent<Rigidbody>();
+		SetAction(() => { });
+	}
 
 	// Set color of food
-	public void SetColor(Color color)
+	public void SetColor(Color newColor)
 	{
-		this.color = color;
-		ColorScript.SetColor(gameObject, color);
+		color = newColor;
+		ColorScript.SetColor(meshRenderer, newColor);
 	}
 }

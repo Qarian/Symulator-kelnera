@@ -58,15 +58,15 @@ public class CustomersCluster : MonoBehaviour
 
 	private void Update()
 	{
-		if (reducePatience)
+		if (!reducePatience)
+			return;
+		
+		remainingPatienceTime -= Time.deltaTime;
+		if (remainingPatienceTime <= 0f)
 		{
-			remainingPatienceTime -= Time.deltaTime;
-			if (remainingPatienceTime <= 0f)
-			{
-				LeaveRestaurant();
-				// Stop counting
-				reducePatience = false;
-			}
+			LeaveRestaurant();
+			// Stop counting
+			reducePatience = false;
 		}
 	}
 

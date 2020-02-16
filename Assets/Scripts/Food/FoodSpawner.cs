@@ -16,24 +16,25 @@ public class FoodSpawner : MonoBehaviour
         {
             spawnPoints.Add(child);
         }
+        
+        if (spawnPoints.Count == 0)
+            Debug.LogError("No food spawning points!");
 
         singleton = this;
     }
 
     public void OrderCubeFood(Color color, int quantity)
     {
-        Debug.Log("Spawn " + quantity + " food");
         for (int i = 0; i < quantity; i++)
-            StartCoroutine(spawnFood(cubeFoodPrefab, CustomersManager.singleton.foodSpawnTime, color));
+            StartCoroutine(SpawnFood(cubeFoodPrefab, CustomersManager.singleton.foodSpawnTime, color));
     }
 
-    private IEnumerator spawnFood(GameObject prefab, float time, Color color)
+    private IEnumerator SpawnFood(GameObject prefab, float time, Color color)
     {
         yield return new WaitForSeconds(time);
         // waiting for spawn point to be free
         WaitForSeconds waiting = new WaitForSeconds(1);
-        bool spawned = false;
-        while (!spawned)
+        while (true)
         {
             for (int i = 0; i < spawnPoints.Count; i++)
             {
@@ -42,12 +43,10 @@ public class FoodSpawner : MonoBehaviour
                     GameObject go = Instantiate(prefab, spawnPoints[i].position + new Vector3(0, i * 0.5f, 0), Quaternion.identity);
                     go.transform.SetParent(spawnPoints[i]);
                     go.GetComponent<FoodScript>().SetColor(color);
-                    spawned = true;
-                    break;
+                    yield break;
                 }
-                else
-                    yield return waiting;
             }
+            yield return waiting;
         }
     }
 }
