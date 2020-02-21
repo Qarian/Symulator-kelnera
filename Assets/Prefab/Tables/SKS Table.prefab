@@ -48,6 +48,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7505175462639187835, guid: 900d1f8373cbe914c8c647e8cc77238d,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7505175463781559776, guid: 900d1f8373cbe914c8c647e8cc77238d,
         type: 3}
       propertyPath: m_Name
@@ -206,6 +211,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7505175462639187835, guid: 900d1f8373cbe914c8c647e8cc77238d,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7505175463781559776, guid: 900d1f8373cbe914c8c647e8cc77238d,
         type: 3}
       propertyPath: m_Name
@@ -284,6 +294,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505175462639187835, guid: 900d1f8373cbe914c8c647e8cc77238d,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7505175463781559776, guid: 900d1f8373cbe914c8c647e8cc77238d,
         type: 3}
@@ -495,6 +510,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SKS Table
       objectReference: {fileID: 0}
+    - target: {fileID: 8555694785968702589, guid: 3fc8223adc8078e45851715bcac56c46,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6b862baa4b913d34fbcae0263b563bfb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fc8223adc8078e45851715bcac56c46, type: 3}
 --- !u!4 &948989299041936246 stripped
@@ -543,6 +563,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7505175462639187835, guid: 900d1f8373cbe914c8c647e8cc77238d,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7505175463781559776, guid: 900d1f8373cbe914c8c647e8cc77238d,
         type: 3}
