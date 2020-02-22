@@ -22,6 +22,8 @@ public class CameraMovement : MonoBehaviour
 		mouseVisible = Cursor.visible;
 		if (mouseVisible)
 			ChangeMouseMode();
+		
+		GameManager.singleton.onDayEnd.Add(OnDayEnd);
 	}
 	
 	void Update()
@@ -56,5 +58,11 @@ public class CameraMovement : MonoBehaviour
 			Cursor.visible = true;
 		}
 		mouseVisible = !mouseVisible;
+	}
+
+	private void OnDayEnd()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 	}
 }

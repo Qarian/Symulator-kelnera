@@ -56,11 +56,10 @@ public class Queue : MonoBehaviour
 
     public void CloseQueue()
     {
-        foreach (CustomersCluster cluster in clusters)
+	    CustomersCluster[] clustersArray = clusters.ToArray();
+        foreach (CustomersCluster cluster in clustersArray)
         {
-			Debug.Log(cluster.numberOfCustomers);
-
-			cluster.LeaveRestaurant();
+	        cluster.LeaveRestaurant();
         }
         barrier.SetActive(true);
     }

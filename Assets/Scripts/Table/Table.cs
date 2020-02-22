@@ -3,7 +3,6 @@
 public class Table : MonoBehaviour
 {
 	public Transform chairPositions = default;
-	public TableDetector tableDetector = default;
 	[SerializeField] GameObject orderSphere = default;
 	[SerializeField] GameObject mesh = default;
 	Interactive tableInteractive;
