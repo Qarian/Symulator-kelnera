@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI moneyUI = default;
+    [SerializeField] private ClockUI clockUI = default;
 
     [Space, Tooltip("In game time in minutes")]
     [SerializeField] float dayDuration = 6;
@@ -30,6 +31,11 @@ public class GameManager : MonoBehaviour
     {
 		score = 0;
 		moneyUI.text = score.ToString();
+        if (clockUI)
+        {
+            clockUI.CountDown(dayDuration);
+        }
+        
         StartCoroutine(GameTimer());
     }
 
