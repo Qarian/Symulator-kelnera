@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TableDetector : MonoBehaviour
 {
-	[SerializeField] private Table tableComponent = default;
-
+	private int orderId;
+	private Action<FoodScript> onFoodOnTable;
+	
 	// References to food components
 	private List<FoodScript> targetFoodScripts = new List<FoodScript>();
 
@@ -13,26 +15,21 @@ public class TableDetector : MonoBehaviour
 		// if food is on table, check if it isn't moving
 		foreach (FoodScript food in targetFoodScripts)
 		{
-			if (food.rigidbody.velocity == Vector3.zero)
+			if (food.Rigidbody.velocity == Vector3.zero)
 			{
-				FoodOnTable(food);
+				targetFoodScripts.Remove(food);
+				onFoodOnTable(food);
+				//FoodOnTable(food);
 				break;
 			}
 		}
-	}
-
-	// Function to run when food is on table
-	private void FoodOnTable(FoodScript food)
-	{
-		targetFoodScripts.Remove(food);
-		tableComponent.EatFood(food);
 	}
 
 	// Check if food entered trigger
 	private void OnTriggerEnter(Collider collider)
 	{
 		FoodScript target = collider.GetComponent<FoodScript>();
-		if (target && target.color == tableComponent.color)
+		if (target && target.Id == orderId)
 		{
 			targetFoodScripts.Add(target);
 		}
@@ -46,5 +43,12 @@ public class TableDetector : MonoBehaviour
 		{
 			targetFoodScripts.Remove(removedFood);
 		}
+	}
+
+	public void AssignOrder(int id, Action<FoodScript> action)
+	{
+		onFoodOnTable = action;
+		orderId = id;
+		gameObject.SetActive(true);
 	}
 }

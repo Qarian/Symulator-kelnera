@@ -5,65 +5,43 @@ public class Table : MonoBehaviour
 	public Transform chairPositions = default;
 	[SerializeField] GameObject orderSphere = default;
 	[SerializeField] GameObject mesh = default;
+	[SerializeField] private TableDetector tableDetector = default;
 	Interactive tableInteractive;
-	CustomersCluster sittingCustomers;
+	
+	public CustomersCluster SittingCustomers { get; private set; }
 
-	[HideInInspector] public int id = 0;
-	public Color color = default;
+	public Interactive OrderSphereInteractive { get; private set; }
+	public TableDetector TableDetector => tableDetector;
+
+	[HideInInspector] public Order currentOrder;
 
 	private void Start()
 	{
-		// To be sure that color will be visible to player
-        SetColor();
-
-        Interactive interactiveSphere = orderSphere.AddComponent<Interactive>();
-        interactiveSphere.SetAction(PlaceOrder);
+		OrderSphereInteractive = orderSphere.AddComponent<Interactive>();
 		tableInteractive = mesh.AddComponent<Interactive>();
         tableInteractive.SetAction(SitCustomers);
         Disable();
-		orderSphere.SetActive(false);
-	}
 
-	// Set color when changed value in inspector
-	private void OnValidate()
-	{
-		SetColor();
+        orderSphere.SetActive(false);
+		tableDetector.gameObject.SetActive(false);
 	}
-
-	#region customers
+	
 	// Put customers at table
 	void SitCustomers()
 	{
-        sittingCustomers = CustomersManager.singleton.ChooseTable(this);
-	}
-
-	// Customers have chosen the meal
-	public void ActivateOrder()
-	{
-		orderSphere.SetActive(true);
-	}
-
-	// Place order, function to add to interactive object
-	private void PlaceOrder()
-	{
-        orderSphere.SetActive(false);
-		FoodSpawner.singleton.OrderCubeFood(color, sittingCustomers.numberOfCustomers);
-	}
-	
-	public void EatFood(FoodScript food)
-	{
-		// TODO: Pooling for food
-		Destroy(food.gameObject);
-		StartCoroutine(CustomersManager.singleton.WaitForEating(sittingCustomers));
+        SittingCustomers = CustomersManager.singleton.ChooseTable(this);
+        currentOrder = OrdersManager.NewOrder(this);
 	}
 
 	public void ResetTable()
 	{
+		if (!(currentOrder is null))
+			currentOrder.CancelOrder();
+		tableDetector.gameObject.SetActive(false);
 		orderSphere.SetActive(false);
-		sittingCustomers = null;
+		SittingCustomers = null;
 		CustomersManager.singleton.FreeTable(this);
 	}
-	#endregion
 
 	public void Enable()
 	{
@@ -73,12 +51,5 @@ public class Table : MonoBehaviour
 	public void Disable()
 	{
         tableInteractive.active = false;
-	}
-
-	// Set color of the table
-	private void SetColor()
-	{
-		ColorScript.SetColor(orderSphere, color);
-		ColorScript.SetColor(mesh, color);
 	}
 }

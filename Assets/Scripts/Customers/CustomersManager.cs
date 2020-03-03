@@ -12,8 +12,8 @@ public class CustomersManager : MonoBehaviour
     [Header("Times (seconds)")]
     [SerializeField] float newCustomerTime = 8f;
     public float foodSpawnTime = 10f;
-    [SerializeField] float customersFoodChoosingTime = 4f;
-    [SerializeField] float customersEatingTime = 5f;
+    public float customersFoodChoosingTime = 4f;
+    public float customersEatingTime = 5f;
 
     [Header("Patience (seconds)")]
     public float queuePatienceTime = 25f;
@@ -45,7 +45,6 @@ public class CustomersManager : MonoBehaviour
         {
             tables.Add(tablesTransform.GetChild(i).GetComponent<Table>());
             freeTables.Add(tables[i]);
-            tables[i].id = i;
         }
 
         StartCoroutine(SpawnCustomers());
@@ -73,7 +72,7 @@ public class CustomersManager : MonoBehaviour
     // Player choose table for customers
     public CustomersCluster ChooseTable(Table table)
     {
-        // make free tables notselectable
+        // make free tables not selectable
         foreach (Table freeTable in freeTables)
         {
             freeTable.Disable();
@@ -89,20 +88,17 @@ public class CustomersManager : MonoBehaviour
         return ret;
     }
 
-    // Customers choose meal
-    public IEnumerator WaitForOrder(Table table)
-    {
-        yield return new WaitForSeconds(customersEatingTime);
-        table.ActivateOrder();
-    }
-
     public IEnumerator WaitForEating(CustomersCluster customersCluster)
     {
-        yield return new WaitForSeconds(customersFoodChoosingTime);
+        yield return new WaitForSeconds(customersEatingTime);
         if (customersCluster is null)
             Debug.LogError("Gave food to table without customers");
         else
-            customersCluster.CustomerAteFood();
+        {
+            customersCluster.CustomersAteFood();
+            Debug.Log("customers out");
+        }
+            
     }
 
     public void FreeTable(Table table)

@@ -74,4 +74,8 @@ public class GameManager : MonoBehaviour
 		moneyUI.text = score.ToString();
 	}
 
+	public void RunCoroutine(IEnumerator iEnumerator)
+	{
+		StartCoroutine(iEnumerator);
+	}
 }

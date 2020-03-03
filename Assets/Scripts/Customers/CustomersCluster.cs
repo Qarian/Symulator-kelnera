@@ -12,7 +12,6 @@ public class CustomersCluster : MonoBehaviour
 
 	private Table assignedTable;
 	private int customersAtTable = 0;
-	private int foodsEaten = 0;
 
 	// Some number for start
 	private float remainingPatienceTime;
@@ -23,7 +22,6 @@ public class CustomersCluster : MonoBehaviour
 	{
 		// clear values (in case of pooling)
 		customersAtTable = 0;
-		foodsEaten = 0;
 		remainingPatienceTime = CustomersManager.singleton.queuePatienceTime;
 		reducePatience = true;
 		
@@ -121,19 +119,15 @@ public class CustomersCluster : MonoBehaviour
 			reducePatience = true;
 			remainingPatienceTime /= 2f;
 			remainingPatienceTime += CustomersManager.singleton.tablePatienceTime;
-			StartCoroutine(CustomersManager.singleton.WaitForOrder(assignedTable));
-		}
 			
+			StartCoroutine(assignedTable.currentOrder.PreparingOrder());
+		}
 	}
 
-	public void CustomerAteFood()
+	public void CustomersAteFood()
 	{
-		foodsEaten++;
-		if(foodsEaten == numberOfCustomers)
-		{
-			LeaveRestaurant();
-			GameManager.singleton.ChangeScore(CustomersManager.singleton.pointsFromTable);
-		}
+		LeaveRestaurant();
+		GameManager.singleton.ChangeScore(CustomersManager.singleton.pointsFromTable);
 	}
 
 

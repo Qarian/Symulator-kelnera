@@ -5,20 +5,19 @@ public class FoodScript : Interactive
 {
 	[SerializeField] private Renderer meshRenderer = default;
 	public Transform meshTransform;
-	public new Rigidbody rigidbody;
-
-	[HideInInspector] public Color color;
+	public Rigidbody Rigidbody { get; private set; }
+	public int Id { get; private set; }
 
 	private void Awake()
 	{
-		rigidbody = GetComponent<Rigidbody>();
+		Rigidbody = GetComponent<Rigidbody>();
+		// No interaction with food - only for modifying cursor
 		SetAction(() => { });
 	}
-
-	// Set color of food
-	public void SetColor(Color newColor)
+	
+	public void Init(Color newColor, int id)
 	{
-		color = newColor;
+		Id = id;
 		ColorScript.SetColor(meshRenderer, newColor);
 	}
 }

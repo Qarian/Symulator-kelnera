@@ -23,13 +23,13 @@ public class FoodSpawner : MonoBehaviour
         singleton = this;
     }
 
-    public void OrderCubeFood(Color color, int quantity)
+    public void OrderCubeFood(Color color, int quantity, int orderId)
     {
         for (int i = 0; i < quantity; i++)
-            StartCoroutine(SpawnFood(cubeFoodPrefab, CustomersManager.singleton.foodSpawnTime, color));
+            StartCoroutine(SpawnFood(cubeFoodPrefab, CustomersManager.singleton.foodSpawnTime, color, orderId));
     }
 
-    private IEnumerator SpawnFood(GameObject prefab, float time, Color color)
+    private IEnumerator SpawnFood(GameObject prefab, float time, Color color, int orderId)
     {
         yield return new WaitForSeconds(time);
         // waiting for spawn point to be free
@@ -42,7 +42,7 @@ public class FoodSpawner : MonoBehaviour
                 {
                     GameObject go = Instantiate(prefab, spawnPoints[i].position + new Vector3(0, i * 0.5f, 0), Quaternion.identity);
                     go.transform.SetParent(spawnPoints[i]);
-                    go.GetComponent<FoodScript>().SetColor(color);
+                    go.GetComponent<FoodScript>().Init(color, orderId);
                     yield break;
                 }
             }
