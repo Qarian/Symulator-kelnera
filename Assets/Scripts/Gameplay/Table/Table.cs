@@ -3,15 +3,17 @@
 public class Table : MonoBehaviour
 {
 	public Transform chairPositions = default;
-	[SerializeField] GameObject orderSphere = default;
-	[SerializeField] GameObject mesh = default;
+	[SerializeField] private GameObject orderSphere = default;
+	[SerializeField] private GameObject mesh = default;
 	[SerializeField] private TableDetector tableDetector = default;
+	[SerializeField] private OrderGUI orderGUI = default;
 	Interactive tableInteractive;
 	
 	public CustomersCluster SittingCustomers { get; private set; }
 
 	public Interactive OrderSphereInteractive { get; private set; }
 	public TableDetector TableDetector => tableDetector;
+	public OrderGUI OrderGui => orderGUI;
 
 	[HideInInspector] public Order currentOrder;
 

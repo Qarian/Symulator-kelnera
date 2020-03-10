@@ -6,7 +6,8 @@ public class FoodScript : Interactive
 	[SerializeField] private Renderer meshRenderer = default;
 	public Transform meshTransform;
 	public Rigidbody Rigidbody { get; private set; }
-	public int Id { get; private set; }
+	public int OrderId { get; private set; }
+	public int CustomerId { get; private set; }
 
 	private void Awake()
 	{
@@ -15,9 +16,10 @@ public class FoodScript : Interactive
 		SetAction(() => { });
 	}
 	
-	public void Init(Color newColor, int id)
+	public void Init(Color newColor, int orderId, int customerId)
 	{
-		Id = id;
+		OrderId = orderId;
+		CustomerId = customerId;
 		ColorScript.SetColor(meshRenderer, newColor);
 	}
 }

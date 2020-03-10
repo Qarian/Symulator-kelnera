@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class FoodSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject cubeFoodPrefab = default;
-
     private List<Transform> spawnPoints = new List<Transform>();
 
-    public static FoodSpawner singleton;
+    public static FoodSpawner Singleton;
 
     private void Start()
     {
@@ -20,29 +18,30 @@ public class FoodSpawner : MonoBehaviour
         if (spawnPoints.Count == 0)
             Debug.LogError("No food spawning points!");
 
-        singleton = this;
+        Singleton = this;
     }
 
-    public void OrderCubeFood(Color color, int quantity, int orderId)
+    public void OrderFood(Food food)
     {
-        for (int i = 0; i < quantity; i++)
-            StartCoroutine(SpawnFood(cubeFoodPrefab, CustomersManager.singleton.foodSpawnTime, color, orderId));
+        //TODO: implement Queue
+        StartCoroutine(SpawnFood(food));
     }
 
-    private IEnumerator SpawnFood(GameObject prefab, float time, Color color, int orderId)
+    private IEnumerator SpawnFood(Food food)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(CustomersManager.singleton.foodSpawnTime);
         // waiting for spawn point to be free
         WaitForSeconds waiting = new WaitForSeconds(1);
         while (true)
         {
+            // TODO: check for empty places somewhere else
             for (int i = 0; i < spawnPoints.Count; i++)
             {
                 if (spawnPoints[i].childCount == 0)
                 {
-                    GameObject go = Instantiate(prefab, spawnPoints[i].position + new Vector3(0, i * 0.5f, 0), Quaternion.identity);
+                    GameObject go = Instantiate(food.prefab, spawnPoints[i].position + new Vector3(0, i * 0.5f, 0), Quaternion.identity);
                     go.transform.SetParent(spawnPoints[i]);
-                    go.GetComponent<FoodScript>().Init(color, orderId);
+                    go.GetComponent<FoodScript>().Init(food.color, food.orderId, food.customerId);
                     yield break;
                 }
             }

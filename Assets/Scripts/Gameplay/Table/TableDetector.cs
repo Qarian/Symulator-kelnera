@@ -29,7 +29,7 @@ public class TableDetector : MonoBehaviour
 	private void OnTriggerEnter(Collider collider)
 	{
 		FoodScript target = collider.GetComponent<FoodScript>();
-		if (target && target.Id == orderId)
+		if (target && target.OrderId == orderId)
 		{
 			targetFoodScripts.Add(target);
 		}

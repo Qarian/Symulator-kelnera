@@ -5,4 +5,10 @@ using UnityEngine;
 public class OrdersColorSchemeSO : ScriptableObject
 {
     public List<Color> colors;
+
+    public Color this[int id]
+    {
+        get => colors[id];
+        set => colors[id] = value;
+    }
 }
