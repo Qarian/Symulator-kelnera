@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private ClockUI clockUI = default;
     [SerializeField] float timeToWarning = 5.5f;
     [SerializeField] private float warningPulseTime = 0.5f;
-    [SerializeField] private float rotation;
+    [SerializeField] private float rotation = 270f;
     private WaitForSeconds rotateTime;
     private const float RotationStep = 6f;
 
@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour
         StartCoroutine(GameTimer());
         
         // UI
-        rotateTime = new WaitForSeconds(dayDuration/rotation * RotationStep);
+        rotateTime = new WaitForSeconds(dayDuration/rotation * RotationStep * 60);
         StartCoroutine(ClockHandRotation());
         StartCoroutine(ClockUIWarning());
     }
@@ -37,7 +37,7 @@ public class Timer : MonoBehaviour
     private IEnumerator ClockUIWarning()
     {
         yield return new WaitForSeconds(timeToWarning * 60);
-        clockUI.face.DOColor(Color.red, warningPulseTime).SetLoops(-1, LoopType.Yoyo).Play();
+        clockUI.face.DOColor(Color.red, warningPulseTime).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Flash).Play();
     }
 
     private IEnumerator ClockHandRotation()

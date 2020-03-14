@@ -5,7 +5,7 @@ public class ClockUI : MonoBehaviour
 {
     public Image face;
     private Vector3 facePosition;
-    [SerializeField] RectTransform clockHand;
+    [SerializeField] RectTransform clockHand = default;
 
     private Animator anim = default;
 
@@ -24,6 +24,6 @@ public class ClockUI : MonoBehaviour
 
     public void RotateClock(float degree)
     {
-        clockHand.RotateAround(facePosition, Vector3.forward, degree);
+        clockHand.RotateAround(facePosition, Vector3.forward, -degree);
     }
 }
