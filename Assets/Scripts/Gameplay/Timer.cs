@@ -1,0 +1,59 @@
+﻿using System.Collections;
+using UnityEngine;
+using DG.Tweening;
+
+public class Timer : MonoBehaviour
+{
+    [Space, Tooltip("In game time in minutes")]
+    [SerializeField] float dayDuration = 6;
+    
+    [Space, Header("Clock UI")]
+    [SerializeField] private ClockUI clockUI = default;
+    [SerializeField] float timeToWarning = 5.5f;
+    [SerializeField] private float warningPulseTime = 0.5f;
+    [SerializeField] private float rotation;
+    private WaitForSeconds rotateTime;
+    private const float RotationStep = 6f;
+
+    private bool isDay = false;
+
+    public void StartDay()
+    {
+        isDay = true;
+        StartCoroutine(GameTimer());
+        
+        // UI
+        rotateTime = new WaitForSeconds(dayDuration/rotation * RotationStep);
+        StartCoroutine(ClockHandRotation());
+        StartCoroutine(ClockUIWarning());
+    }
+        
+    private IEnumerator GameTimer()
+    {
+        yield return new WaitForSeconds(dayDuration * 60);
+        EndTime();
+    }
+    
+    private IEnumerator ClockUIWarning()
+    {
+        yield return new WaitForSeconds(timeToWarning * 60);
+        clockUI.face.DOColor(Color.red, warningPulseTime).SetLoops(-1, LoopType.Yoyo).Play();
+    }
+
+    private IEnumerator ClockHandRotation()
+    {
+        while (isDay)
+        {
+            yield return rotateTime;
+            clockUI.RotateClock(RotationStep);
+        }
+    }
+    
+    private void EndTime()
+    {
+        isDay = false;
+        Debug.Log("Time Ended!");
+        // End day when nobody is inside
+        CustomersManager.singleton.EndTime();
+    }
+}

@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:380233cb28ce35abdacb5ef95afebae114048f0940fc2b22220b79f83c606fb5
-size 407
+fileFormatVersion: 2
+guid: 621aa8e2cdd0f0d4eb2be88d8a1b848d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - colorScheme: {fileID: 11400000, guid: 08b05548521e7f84b951d7cb903cadca, type: 2}
+  - foodList: {fileID: 11400000, guid: b2e5dbf304a82934995678ac1d2731a1, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
