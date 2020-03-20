@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5995626857611216460}
   - component: {fileID: 3322131621354815472}
   - component: {fileID: 996262756773983268}
+  - component: {fileID: 6736953220705234899}
   m_Layer: 0
   m_Name: Game Managers
   m_TagString: Untagged
@@ -46,9 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6221f0b8a0c4a43981f127b1a0bac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyUI: {fileID: 0}
-  neededScore: 0
-  score: 0
+  toggleInputKey: 91
 --- !u!114 &5995626857611216460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,7 +87,7 @@ MonoBehaviour:
   clockUI: {fileID: 0}
   timeToWarning: 5.5
   warningPulseTime: 0.5
-  rotation: 0
+  rotation: 270
 --- !u!114 &996262756773983268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,3 +102,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorScheme: {fileID: 11400000, guid: 08b05548521e7f84b951d7cb903cadca, type: 2}
   foodList: {fileID: 11400000, guid: b2e5dbf304a82934995678ac1d2731a1, type: 2}
+--- !u!114 &6736953220705234899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995626857611216456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b72e3fc538d1045932a21fbfb75f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyUI: {fileID: 0}
+  minMoneyFromCustomer: 10
+  extraMoneyForTime: 20
+  neededScore: 0
+  score: 0

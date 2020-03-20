@@ -309,6 +309,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212482855}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &232577729 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8257808508933697052, guid: 5bdddfee3d4d510488a5009f4e876a4b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386907246}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &238003974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1488,12 +1500,12 @@ PrefabInstance:
     - target: {fileID: 3567034835176227520, guid: 5bdddfee3d4d510488a5009f4e876a4b,
         type: 3}
       propertyPath: dayDuration
-      value: 0.15
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3567034835176227520, guid: 5bdddfee3d4d510488a5009f4e876a4b,
         type: 3}
       propertyPath: timeToWarning
-      value: 0.1
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 3567034835176227520, guid: 5bdddfee3d4d510488a5009f4e876a4b,
         type: 3}
@@ -1857,6 +1869,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1476291393}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1513807543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5525508340556823416, guid: 5bdddfee3d4d510488a5009f4e876a4b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386907246}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1513807545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513807543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b72e3fc538d1045932a21fbfb75f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyUI: {fileID: 232577729}
+  minMoneyFromCustomer: 10
+  extraMoneyForTime: 10
+  neededScore: 20
+  score: 0
 --- !u!1 &1598202785
 GameObject:
   m_ObjectHideFlags: 0

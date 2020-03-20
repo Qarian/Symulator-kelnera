@@ -404,6 +404,11 @@ PrefabInstance:
       propertyPath: moneyUI
       value: 
       objectReference: {fileID: 8257808508933697052}
+    - target: {fileID: 6736953220705234899, guid: 6f9b274308a68cb438876fedad782ba9,
+        type: 3}
+      propertyPath: moneyUI
+      value: 
+      objectReference: {fileID: 8257808508933697052}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f9b274308a68cb438876fedad782ba9, type: 3}
 --- !u!4 &5525508340556823422 stripped
