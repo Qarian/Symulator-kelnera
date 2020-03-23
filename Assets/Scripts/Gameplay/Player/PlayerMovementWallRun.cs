@@ -7,12 +7,12 @@ public class PlayerMovementWallRun : MonoBehaviour
     [SerializeField] private KeyCode jumpKey = KeyCode.Space;
 
 	[Space]
-	[SerializeField] private float accelaration = 10f;
-	[SerializeField] private float maxSpeed = 10f;
+	public float accelaration = 10f;
+	public float maxSpeed = 10f;
 	[SerializeField, Range(0, 1), Tooltip("0 - no vertical movement while wall running,\n1 - no effect")]
 	private float verticalSpeedModifierWallRunning = 0.85f;
 
-	[SerializeField] private float jumpForce = 10f;
+	[SerializeField] public float jumpForce = 10f;
     [SerializeField] private float jumpOfWallForce = 4f;
     [SerializeField] private float wallJumpTime = 0.5f;
 
@@ -20,6 +20,8 @@ public class PlayerMovementWallRun : MonoBehaviour
 	[SerializeField] private Transform cameraTransform = default;
 	[SerializeField] private float maxCameraRotation = 30f;
 	[SerializeField] private float rotationSpeed = 0.5f;
+
+    public static PlayerMovementWallRun singleton;
 
 	// Rotating camera during wall running
 	private float cameraRotationTarget = 0;
@@ -63,6 +65,8 @@ public class PlayerMovementWallRun : MonoBehaviour
 		raycastLayerMask = ~raycastLayerMask;
 		
 		GameManager.singleton.onInputToggle.Add(ChangeInput);
+
+        singleton = this;
 	}
 
 	private void Update()

@@ -10,12 +10,14 @@ public class PointsManager : MonoBehaviour
     [SerializeField] private int extraMoneyForTime = 20;
     
     public int neededScore = 0;
+    public static PointsManager singleton;
 
     [Space]
     [HideInInspector] public int score = 0;
 
     private void Start()
     {
+        singleton = this;
         score = 0;
         moneyUI.text = score.ToString();
     }

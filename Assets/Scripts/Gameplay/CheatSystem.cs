@@ -8,11 +8,16 @@ public class CheatSystem : MonoBehaviour
     // Start is called before the first frame update
     string cheat;
     public GameObject inputField;
+    [SerializeField] private GameObject cheatsUI;
     private GameObject search;
+    [SerializeField] private int cheatMoney = 100;
+    [SerializeField] private float cheatAccelerationMultiplier = 2;
+    [SerializeField] private float cheatJumpForceMultiplier = 2;
+    [SerializeField] private float cheatMaxSpeedMultiplier = 2;
 
     void Start()
     {
-        search = GameObject.Find("CheatsUI");
+        search = cheatsUI;
         search.SetActive(!search.activeSelf);
     }
 
@@ -61,51 +66,67 @@ public class CheatSystem : MonoBehaviour
                 case "wuhan":
                     Debug.Log("To nawet nie jest smieszne...");
                     break;
+
+                case "inertia":
+                    Debug.Log("Cheat activated: no gravity");
+                    InertiaCheat();
+                    break;
             }
 
-
-            void GrandmaCheat()
-            {
+    }
+    void GrandmaCheat()
+    {
                 //skrypt do dodania pieniedzy
-            }
+        PointsManager.singleton.ChangeScore(cheatMoney);
+    }
 
-            void HolidaysCheat()
-            {
-                //skrypt do dodania czasu
-            }
+    void HolidaysCheat()
+    {
+        //skrypt do dodania czasu
 
-            void SzyszaCheat()
-            {
-                //skrypt do szyszy Julianka
-            }
+    }
 
-            void FlyhighCheat()
-            {
-                //skrypt do platform
-                FallingPlatformSKS.jumpToFallPlatformStatic = 10000;
-            }
+    void SzyszaCheat()
+    {
+        //skrypt do szyszy Julianka
 
-            void RunboyrunCheat()
-            {
-                //skrypt do biegu
-            }
+    }
 
-            void IlovebunnyCheat()
-            {
-                //skrypt do wyzszego skoku
-            }
+    void FlyhighCheat()
+    {
+        //skrypt do platform
+        FallingPlatformSKS.jumpToFallPlatformStatic = 10000;
+    }
 
-            void GohomeCheat()
-            {
-                //skrypt do konca dnia
-            }
+    void RunboyrunCheat()
+    {
+        //skrypt do biegu
+        PlayerMovementWallRun.singleton.accelaration *= cheatAccelerationMultiplier;
+        PlayerMovementWallRun.singleton.maxSpeed *= cheatMaxSpeedMultiplier;
+    }
+
+    void IlovebunnyCheat()
+    {
+        //skrypt do wyzszego skoku
+        PlayerMovementWallRun.singleton.jumpForce *= cheatJumpForceMultiplier;
+    }
+
+    void GohomeCheat()
+    {
+        //skrypt do konca dnia
+        GameManager.singleton.EndDay();
+    }
+
+    void InertiaCheat()
+    {
+        //skrypt do wylaczenia grawitacji
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.RightShift))
         {
             search.SetActive(!search.activeSelf);
             CheatField();
@@ -113,6 +134,3 @@ public class CheatSystem : MonoBehaviour
             
     }
 }
-        
-    
-
