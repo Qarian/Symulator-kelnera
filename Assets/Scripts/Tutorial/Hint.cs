@@ -1,3 +1,58 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:77e340dc8f1cf9aeb12c201cf34db31d5d8601f98b146e9be3911f7e13a9565e
-size 1515
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Hint : MonoBehaviour
+{
+    [SerializeField]
+    private Image symbol = default;
+    [SerializeField]
+    private Color backgroundColor = default;
+    [SerializeField]
+    private Color symbolColor = default;
+    [SerializeField]
+    private float distanceToTrigger = default;
+    [SerializeField]
+    [Range(0, 0.1f)] private float visibilityStep = default;
+
+    private Image image;
+    private Color tempBackgroundColor;
+    private Color tempSymbolColor;
+    private float currVisibility;
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+    }
+
+    private void Start()
+    {
+        tempBackgroundColor = backgroundColor;
+        tempBackgroundColor.a = 0;
+        image.color = tempBackgroundColor;
+
+        tempSymbolColor = symbolColor;
+        tempSymbolColor.a = 0;
+        symbol.color = tempSymbolColor;
+
+        currVisibility = 0;
+    }
+
+    private void Update()
+    {
+        if (Vector3.Distance(Camera.main.transform.position, transform.position) < distanceToTrigger)
+        {
+            currVisibility = Mathf.Lerp(currVisibility, 1, visibilityStep); 
+        }
+        else
+        {
+            currVisibility = Mathf.Lerp(currVisibility, 0, visibilityStep);
+        }
+
+        tempBackgroundColor.a = currVisibility;
+        tempSymbolColor.a = currVisibility;
+        image.color = tempBackgroundColor;
+        symbol.color = tempSymbolColor;
+    }
+}
