@@ -25,3 +25,4 @@ sysinfo.txt
 \.vscode/
 \.vs/
 \.idea/
+*.meta
